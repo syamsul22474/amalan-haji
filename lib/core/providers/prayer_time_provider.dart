@@ -4,7 +4,10 @@ import '../services/prayer_time_service.dart';
 import 'clock_provider.dart';
 
 final prayerTimeProvider = FutureProvider<PrayerTime>((ref) async {
-  final currentDate = ref.watch(clockProvider);
+  final nowDayKey = ref.watch(
+    clockProvider.select((s) => DateTime(s.now.year, s.now.month, s.now.day)),
+  );
+  final currentDate = nowDayKey;
   final service = PrayerTimeService();
   return service.fetchWaktuSholat(currentDate);
 });

@@ -26,15 +26,26 @@ class AmalanNotifier extends StateNotifier<List<Amalan>> {
     state = updatedList;
   }
 
+  Future<void> refreshFromStorage() async {
+    await _loadStatus();
+  }
+
   Future<void> toggleAmalanStatus(Amalan amalan) async {
-    final newStatus = !amalan.sudahDilakukan;
-    await _storageService.setAmalanStatus(
-      amalan.hariDzulhijjah,
-      amalan.id,
-      newStatus,
-    );
+    await setAmalanStatus(amalan: amalan, status: !amalan.sudahDilakukan);
+  }
+
+  Future<void> setAmalanStatus({
+    required Amalan amalan,
+    required bool status,
+  }) async {
+    await _storageService.setAmalanStatus(amalan.hariDzulhijjah, amalan.id, status);
     state = state.map((a) {
-      return a.id == amalan.id ? a.copyWith(sudahDilakukan: newStatus) : a;
+      return a.id == amalan.id ? a.copyWith(sudahDilakukan: status) : a;
     }).toList();
+  }
+
+  Future<void> resetAll() async {
+    await _storageService.resetAllChecklist();
+    state = AmalanData.allAmalan;
   }
 }

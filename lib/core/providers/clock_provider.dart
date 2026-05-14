@@ -1,39 +1,76 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final clockProvider = StateNotifierProvider<ClockNotifier, DateTime>((ref) {
+class ClockState {
+  final DateTime now;
+  final bool isSimulationMode;
+
+  const ClockState({
+    required this.now,
+    required this.isSimulationMode,
+  });
+
+  ClockState copyWith({
+    DateTime? now,
+    bool? isSimulationMode,
+  }) {
+    return ClockState(
+      now: now ?? this.now,
+      isSimulationMode: isSimulationMode ?? this.isSimulationMode,
+    );
+  }
+}
+
+final clockProvider = StateNotifierProvider<ClockNotifier, ClockState>((ref) {
   return ClockNotifier();
 });
 
-class ClockNotifier extends StateNotifier<DateTime> {
-  ClockNotifier() : super(DateTime.now());
+class ClockNotifier extends StateNotifier<ClockState> {
+  ClockNotifier()
+      : super(
+          ClockState(
+            now: DateTime.now(),
+            isSimulationMode: false,
+          ),
+        ) {
+    _startRealTimeTimer();
+  }
 
-  bool _isSimulationMode = false;
   Timer? _realTimeTimer;
 
-  // Mode normal: update setiap detik
-  void startRealTime() {
-    _isSimulationMode = false;
+  void _startRealTimeTimer() {
+    _realTimeTimer?.cancel();
     _realTimeTimer = Timer.periodic(
       const Duration(seconds: 1),
-      (_) => state = DateTime.now(),
+      (_) {
+        if (state.isSimulationMode) return;
+        state = state.copyWith(now: DateTime.now());
+      },
     );
   }
 
-  // Mode simulasi: set tanggal/jam manual
+  void setRealTime() {
+    state = ClockState(now: DateTime.now(), isSimulationMode: false);
+    _startRealTimeTimer();
+  }
+
   void setSimulatedTime(DateTime simulatedTime) {
-    _isSimulationMode = true;
-    _realTimeTimer?.cancel();
-    state = simulatedTime;
+    state = ClockState(now: simulatedTime, isSimulationMode: true);
   }
 
   void addHours(int hours) {
-    if (_isSimulationMode) state = state.add(Duration(hours: hours));
+    if (!state.isSimulationMode) return;
+    state = state.copyWith(now: state.now.add(Duration(hours: hours)));
   }
 
   void addDays(int days) {
-    if (_isSimulationMode) state = state.add(Duration(days: days));
+    if (!state.isSimulationMode) return;
+    state = state.copyWith(now: state.now.add(Duration(days: days)));
   }
 
-  bool get isSimulationMode => _isSimulationMode;
+  @override
+  void dispose() {
+    _realTimeTimer?.cancel();
+    super.dispose();
+  }
 }

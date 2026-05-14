@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import '../../../core/models/amalan.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/providers/amalan_provider.dart';
+import '../../../core/providers/clock_provider.dart';
+import '../../../core/providers/prayer_time_provider.dart';
+import '../../../core/models/prayer_time.dart';
+import '../../../shared/widgets/badge_widget.dart';
+import '../../detail/amalan_detail_page.dart';
+
+enum _AmalanCardState { belumWaktunya, perluDikerjakan, selesai }
 
 class AmalanCard extends ConsumerWidget {
   final Amalan amalan;
@@ -11,6 +20,26 @@ class AmalanCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final now = ref.watch(
+      clockProvider.select(
+        (s) => DateTime(s.now.year, s.now.month, s.now.day, s.now.hour, s.now.minute),
+      ),
+    );
+    final prayerTimeAsync = ref.watch(prayerTimeProvider);
+
+    final triggerTime = prayerTimeAsync.maybeWhen(
+      data: (pt) => _resolveTriggerTime(pt, amalan.waktuTrigger),
+      orElse: () => null,
+    );
+
+    final cardState = _resolveCardState(
+      amalan: amalan,
+      now: now,
+      triggerTime: triggerTime,
+    );
+
+    final bool isLocked = cardState == _AmalanCardState.belumWaktunya;
+
     return Card(
       color: amalan.sudahDilakukan
           ? AppColors.cardBackground.withValues(alpha: 0.5)
@@ -21,7 +50,11 @@ class AmalanCard extends ConsumerWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          // TODO: Navigate to detail
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => AmalanDetailPage(amalanId: amalan.id),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -31,41 +64,247 @@ class AmalanCard extends ConsumerWidget {
               Checkbox(
                 value: amalan.sudahDilakukan,
                 activeColor: AppColors.primaryGold,
-                onChanged: (value) {
-                  ref.read(amalanProvider.notifier).toggleAmalanStatus(amalan);
-                },
+                onChanged: isLocked
+                    ? null
+                    : (value) {
+                        ref.read(amalanProvider.notifier).setAmalanStatus(
+                              amalan: amalan,
+                              status: value ?? false,
+                            );
+                      },
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      amalan.nama,
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        decoration: amalan.sudahDilakukan
-                            ? TextDecoration.lineThrough
-                            : null,
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            amalan.nama,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              decoration: amalan.sudahDilakukan
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        _StatusPill(state: cardState),
+                      ],
                     ),
                     const SizedBox(height: 4),
                     Text(
                       amalan.deskripsi,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 13,
                       ),
                     ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        BadgeWidget(jenis: amalan.jenis),
+                        if (triggerTime != null)
+                          _TimePill(
+                            label: _triggerLabel(amalan.waktuTrigger),
+                          ),
+                        if (isLocked)
+                          const Icon(
+                            Icons.lock_clock,
+                            size: 18,
+                            color: AppColors.textSecondary,
+                          ),
+                      ],
+                    ),
                   ],
                 ),
+              ),
+              const SizedBox(width: 8),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 220),
+                switchInCurve: Curves.easeOut,
+                switchOutCurve: Curves.easeIn,
+                transitionBuilder: (child, animation) {
+                  return ScaleTransition(scale: animation, child: child);
+                },
+                child: amalan.sudahDilakukan
+                    ? const _CheckAnimation(key: ValueKey('done'))
+                    : const Icon(
+                        Icons.chevron_right,
+                        key: ValueKey('go'),
+                        color: AppColors.textSecondary,
+                      ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+_AmalanCardState _resolveCardState({
+  required Amalan amalan,
+  required DateTime now,
+  required DateTime? triggerTime,
+}) {
+  if (amalan.sudahDilakukan) return _AmalanCardState.selesai;
+  if (triggerTime != null && now.isBefore(triggerTime)) {
+    return _AmalanCardState.belumWaktunya;
+  }
+  return _AmalanCardState.perluDikerjakan;
+}
+
+DateTime? _resolveTriggerTime(PrayerTime prayerTime, String? triggerKey) {
+  return switch (triggerKey) {
+    'fajr' => prayerTime.fajr,
+    'syuruq' => prayerTime.syuruq,
+    'dhuhr' => prayerTime.dhuhr,
+    'asr' => prayerTime.asr,
+    'maghrib' => prayerTime.maghrib,
+    'isha' => prayerTime.isha,
+    _ => null,
+  };
+}
+
+String? _triggerLabel(String? triggerKey) {
+  final label = switch (triggerKey) {
+    'fajr' => 'Subuh',
+    'syuruq' => 'Terbit',
+    'dhuhr' => 'Dzuhur',
+    'asr' => 'Ashar',
+    'maghrib' => 'Maghrib',
+    'isha' => 'Isya',
+    _ => null,
+  };
+  if (label == null) return null;
+  return 'Mulai $label';
+}
+
+class _StatusPill extends StatelessWidget {
+  final _AmalanCardState state;
+
+  const _StatusPill({required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    final (label, bg, fg) = switch (state) {
+      _AmalanCardState.selesai => (
+          'SELESAI',
+          AppColors.primaryGold.withValues(alpha: 0.18),
+          AppColors.primaryGold
+        ),
+      _AmalanCardState.belumWaktunya => (
+          'BELUM',
+          AppColors.textSecondary.withValues(alpha: 0.14),
+          AppColors.textSecondary
+        ),
+      _AmalanCardState.perluDikerjakan => (
+          'CEK',
+          AppColors.cardBackground.withValues(alpha: 0.6),
+          AppColors.textPrimary
+        ),
+    };
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: fg.withValues(alpha: 0.45)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: fg,
+          fontWeight: FontWeight.w800,
+          fontSize: 10,
+          letterSpacing: 0.6,
+        ),
+      ),
+    );
+  }
+}
+
+class _TimePill extends StatelessWidget {
+  final String? label;
+
+  const _TimePill({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    if (label == null) return const SizedBox.shrink();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: AppColors.textSecondary.withValues(alpha: 0.35),
+        ),
+      ),
+      child: Text(
+        label!,
+        style: const TextStyle(
+          color: AppColors.textSecondary,
+          fontWeight: FontWeight.w600,
+          fontSize: 11,
+        ),
+      ),
+    );
+  }
+}
+
+class _CheckAnimation extends StatefulWidget {
+  const _CheckAnimation({super.key});
+
+  @override
+  State<_CheckAnimation> createState() => _CheckAnimationState();
+}
+
+class _CheckAnimationState extends State<_CheckAnimation> {
+  static const _assetPath = 'assets/lotties/check.json';
+  late final Future<bool> _assetExistsFuture = _assetExists();
+
+  Future<bool> _assetExists() async {
+    try {
+      await rootBundle.load(_assetPath);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: _assetExistsFuture,
+      builder: (context, snapshot) {
+        final exists = snapshot.data == true;
+        if (exists) {
+          return SizedBox(
+            width: 34,
+            height: 34,
+            child: Lottie.asset(_assetPath, repeat: false),
+          );
+        }
+        return const Icon(
+          Icons.check_circle,
+          color: AppColors.primaryGold,
+        );
+      },
     );
   }
 }
