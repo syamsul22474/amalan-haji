@@ -1,68 +1,76 @@
-# Miscellaneous
-*.class
-*.lock
-*.log
-*.pyc
-*.swp
-.buildlog/
-.history
+# ─────────────────────────────────────────────────────────────────────────────
+# .gitignore — Aplikasi AMALAN HAJI (Flutter)
+# ─────────────────────────────────────────────────────────────────────────────
 
 
+# =============================================================================
+# FLUTTER & DART
+# =============================================================================
 
-# Flutter repo-specific
-/bin/cache/
-/bin/internal/bootstrap.bat
-/bin/internal/bootstrap.sh
-/bin/mingit/
-/dev/benchmarks/mega_gallery/
-/dev/bots/.recipe_deps
-/dev/bots/android_tools/
-/dev/devicelab/ABresults*.json
-/dev/docs/doc/
-/dev/docs/flutter.docs.zip
-/dev/docs/lib/
-/dev/docs/pubspec.yaml
-/dev/integration_tests/**/xcuserdata
-/dev/integration_tests/**/Pods
-/packages/flutter/coverage/
-version
-analysis_benchmark.json
+# Direktori build hasil kompilasi
+build/
 
-# packages file containing multi-root paths
-.packages.generated
-
-# Flutter/Dart/Pub related
-**/doc/api/
+# Flutter/Dart generated files
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-**/generated_plugin_registrant.dart
 .packages
-.pub-preload-cache/
-.pub/
-build/
-flutter_*.png
-linked_*.ds
-unlinked.ds
-unlinked_spec.ds
 
-# Android related
+# Dart generated files (build_runner, hive_generator, riverpod_generator)
+*.g.dart
+*.freezed.dart
+*.gr.dart
+
+# Pub cache & lock (lock file tetap di-commit untuk reproducible builds)
+.pub-cache/
+.pub/
+# Uncomment baris berikut HANYA jika ini library (bukan app):
+# pubspec.lock
+
+# Flutter generated assets
+/lib/generated/
+generated_plugin_registrant.dart
+
+# Coverage
+coverage/
+
+
+# =============================================================================
+# ANDROID
+# =============================================================================
+
 **/android/**/gradle-wrapper.jar
-.gradle/
+**/android/.gradle
 **/android/captures/
 **/android/gradlew
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
-**/android/key.properties
-*.jks
+**/android/**/GeneratedPluginRegistrant.kt
 
-# iOS/XCode related
+# Android Keystore — JANGAN PERNAH commit file ini!
+*.jks
+*.keystore
+android/key.properties
+android/app/google-services.json
+
+# Android build output
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+
+
+# =============================================================================
+# iOS
+# =============================================================================
+
 **/ios/**/*.mode1v3
 **/ios/**/*.mode2v3
 **/ios/**/*.moved-aside
 **/ios/**/*.pbxuser
 **/ios/**/*.perspectivev3
+**/ios/**/*.xccheckout
+**/ios/**/*.xcscmblueprint
 **/ios/**/*sync/
 **/ios/**/.sconsign.dblite
 **/ios/**/.tags*
@@ -70,7 +78,6 @@ unlinked_spec.ds
 **/ios/**/DerivedData/
 **/ios/**/Icon?
 **/ios/**/Pods/
-**/ios/**/.symlinks/
 **/ios/**/profile
 **/ios/**/xcuserdata
 **/ios/.generated/
@@ -79,41 +86,251 @@ unlinked_spec.ds
 **/ios/Flutter/Flutter.framework
 **/ios/Flutter/Flutter.podspec
 **/ios/Flutter/Generated.xcconfig
-**/ios/Flutter/ephemeral
+**/ios/Flutter/ephemeral/
 **/ios/Flutter/app.flx
 **/ios/Flutter/app.zip
 **/ios/Flutter/flutter_assets/
-**/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 
-# macOS
-**/Flutter/ephemeral/
-**/Pods/
-**/macos/Flutter/GeneratedPluginRegistrant.swift
-**/macos/Flutter/ephemeral
-**/xcuserdata/
+# CocoaPods
+**/ios/Podfile.lock
 
-# Windows
+# iOS Distribution — JANGAN PERNAH commit file ini!
+**/ios/GoogleService-Info.plist
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+
+
+# =============================================================================
+# MACOS
+# =============================================================================
+
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/ephemeral/
+
+
+# =============================================================================
+# WEB
+# =============================================================================
+
+**/web/flutter_service_worker.js
+
+
+# =============================================================================
+# WINDOWS
+# =============================================================================
+
 **/windows/flutter/generated_plugin_registrant.cc
 **/windows/flutter/generated_plugin_registrant.h
 **/windows/flutter/generated_plugins.cmake
 
-# Linux
+
+# =============================================================================
+# LINUX
+# =============================================================================
+
 **/linux/flutter/generated_plugin_registrant.cc
 **/linux/flutter/generated_plugin_registrant.h
 **/linux/flutter/generated_plugins.cmake
 
-# Coverage
+
+# =============================================================================
+# HIVE (Local Database)
+# =============================================================================
+
+# File database Hive yang dibuat runtime (data user lokal)
+*.hive
+*.lock
+
+# Hive box files di direktori tertentu
+**/hive_data/
+
+
+# =============================================================================
+# ENVIRONMENT & SECRETS — SANGAT PENTING!
+# =============================================================================
+
+# File environment variables
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+*.env
+
+# File konfigurasi yang mengandung API keys atau secrets
+secrets.dart
+lib/core/constants/secrets.dart
+lib/config/secrets.dart
+config.json
+secrets.json
+
+# Firebase (jika digunakan di masa depan)
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart
+
+
+# =============================================================================
+# IDE & EDITOR
+# =============================================================================
+
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+.name
+.classpath
+.project
+.settings/
+workspace.xml
+
+# Xcode
+*.xcworkspace/
+xcuserdata/
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+
+# =============================================================================
+# SISTEM OPERASI
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+Icon?
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+
+# =============================================================================
+# TESTING & CODE COVERAGE
+# =============================================================================
+
 coverage/
+*.lcov
+test/coverage/
+lcov.info
+.dart_tool/test_results/
 
-# Symbols
-app.*.symbols
 
-# Exceptions to above rules.
-!**/ios/**/default.mode1v3
-!**/ios/**/default.mode2v3
-!**/ios/**/default.pbxuser
-!**/ios/**/default.perspectivev3
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
-!/dev/ci/**/Gemfile.lock
+# =============================================================================
+# LOGS & CRASH REPORTS
+# =============================================================================
+
+*.log
+logs/
+crash_logs/
+*.crash
+
+
+# =============================================================================
+# TEMPORARY FILES
+# =============================================================================
+
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+.cache/
+tmp/
+temp/
+
+
+# =============================================================================
+# DOKUMENTASI BUILD (opsional — uncommit jika ingin track docs)
+# =============================================================================
+
+doc/api/
+
+
+# =============================================================================
+# FASTLANE (CI/CD — jika digunakan)
+# =============================================================================
+
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+fastlane/readme.md
+
+
+# =============================================================================
+# CATATAN PENTING
+# =============================================================================
+#
+# File yang SENGAJA di-commit (tidak di-ignore):
+#   ✅ pubspec.yaml          — dependency declarations
+#   ✅ pubspec.lock          — reproducible builds (untuk app, bukan library)
+#   ✅ analysis_options.yaml — lint rules
+#   ✅ .gitignore            — file ini sendiri
+#   ✅ lib/core/constants/amalan_data.dart  — master data amalan (hardcoded)
+#   ✅ assets/               — semua asset (Lottie JSON, SVG, font)
+#   ✅ test/                 — semua file unit test
+#
+# File yang JANGAN PERNAH di-commit:
+#   ❌ *.jks / *.keystore    — Android signing key
+#   ❌ *.p12 / *.p8          — iOS signing certificate
+#   ❌ google-services.json  — Firebase config
+#   ❌ .env / secrets.dart   — API keys & secrets
+#   ❌ *.hive                — Data lokal user
+#
+# =============================================================================
