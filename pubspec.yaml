@@ -1,0 +1,58 @@
+name: amalan_haji
+description: Aplikasi panduan dan checklist ibadah haji
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # Local Storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # HTTP & API
+  dio: ^5.4.3
+
+  # Kalender & Waktu
+  hijri: ^3.0.0
+  intl: ^0.19.0
+
+  # Notifikasi
+  flutter_local_notifications: ^17.2.2
+
+  # UI & Font
+  google_fonts: ^6.2.1
+  flex_color_scheme: ^7.3.1
+  flutter_svg: ^2.0.10+1
+  flutter_animate: ^4.5.0
+  lottie: ^3.1.2
+  shimmer: ^3.0.0
+  glassmorphism: ^3.0.0
+  confetti: ^0.7.0
+  percent_indicator: ^4.2.3
+  salomon_bottom_bar: ^3.3.2
+  flutter_slidable: ^3.1.0
+  go_router: ^14.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.9
+  riverpod_generator: ^2.4.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/lotties/
+    - assets/icons/
+    - assets/images/
