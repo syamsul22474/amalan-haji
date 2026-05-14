@@ -34,7 +34,10 @@ class _AmalanHajiAppState extends ConsumerState<AmalanHajiApp> {
     Future.microtask(() async {
       await NotificationService.instance.init();
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     ref.listen(
       clockProvider.select((s) => s.isSimulationMode),
       (_, next) async {
@@ -65,10 +68,7 @@ class _AmalanHajiAppState extends ConsumerState<AmalanHajiApp> {
         );
       },
     );
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Amalan Haji',
       theme: ThemeData.dark(useMaterial3: true).copyWith(

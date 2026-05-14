@@ -29,9 +29,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.initState();
     _confettiController = ConfettiController(duration: const Duration(seconds: 1));
 
-    ref.listen(amalanProvider, (_, __) => _checkCompletion());
-    ref.listen(currentDayProvider, (_, __) => _checkCompletion());
-
     WidgetsBinding.instance.addPostFrameCallback((_) => _checkCompletion());
   }
 
@@ -60,6 +57,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(amalanProvider, (_, __) => _checkCompletion());
+    ref.listen(currentDayProvider, (_, __) => _checkCompletion());
+
     final isSimulationMode =
         ref.watch(clockProvider.select((s) => s.isSimulationMode));
     final currentDay = ref.watch(currentDayProvider);
