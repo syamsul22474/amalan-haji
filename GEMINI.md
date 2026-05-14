@@ -34,6 +34,12 @@ Fitur kritis untuk pengujian.
 - **Developer Context**: Fokus pada user experience jamaah haji Indonesia.
 
 ## 6. Implementasi Terbaru (Ringkas)
-- **AmalanCard**: badge (RUKUN/WAJIB/SUNNAH), status pill (BELUM/CEK/SELESAI), lock “Belum waktunya” berdasarkan `waktuTrigger`, navigasi ke detail, animasi centang (Lottie dengan fallback ikon).
-- **Detail/Progress/Settings**: halaman detail lebih lengkap, ringkasan progress total & per-hari, settings simulasi tanggal/jam + reset checklist.
-- **Notifikasi Sholat**: schedule pengingat Subuh/Dzuhur/Ashar/Maghrib/Isya, dibatalkan saat mode simulasi aktif.
+- **Kalender Umm al-Qura**: Menggunakan standar resmi Arab Saudi dengan fitur `HijriAdjustment` yang dipersistenkan di Hive.
+- **Home Dashboard**: Redesain progres menggunakan kartu horizontal (Hari Ini, Rukun, Wajib) dengan desain Glassmorphism dan interaksi Bottom Sheet untuk amalan tersisa.
+- **Validasi Amalan**:
+    - **Time & Date Lock**: Amalan terkunci jika belum masuk tanggal Hijriah atau jam pelaksanaannya.
+    - **Warning Snackbar**: Pesan edukatif saat mencoba mencentang amalan yang terkunci.
+    - **Uncheck Protection**: Dialog konfirmasi saat membatalkan status amalan yang sudah selesai.
+- **Ongoing Amalan**: Fitur monitoring amalan berkelanjutan (seperti Talbiyah) yang berakhir berdasarkan dependency amalan lain (seperti Lontar Jumrah Aqabah).
+- **Date Header**: Tampilan real-time jam simulasi untuk memudahkan pengujian.
+- **Amalan Data**: Penyesuaian urutan 8 Dzulhijjah (Wewangian sebelum Ihram).

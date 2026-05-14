@@ -2,9 +2,9 @@ import '../models/amalan.dart';
 
 class AmalanData {
   static const List<Amalan> amalan8Dzulhijjah = [
-    Amalan(id: 'ihram', nama: 'Ihram dari Miqat / Tempat Tinggal', deskripsi: 'Niat ihram disertai mandi & memakai wewangian', jenis: JenisAmalan.rukun, hariDzulhijjah: 8, urutan: 1),
-    Amalan(id: 'wangi_sebelum', nama: 'Memakai Wewangian sebelum Ihram', deskripsi: 'Disunahkan memakai minyak wangi di badan', jenis: JenisAmalan.sunnah, hariDzulhijjah: 8, urutan: 2),
-    Amalan(id: 'talbiyah', nama: 'Mengucapkan Talbiyah', deskripsi: 'Mulai ihram hingga lontar Jumrah Aqabah', jenis: JenisAmalan.sunnah, hariDzulhijjah: 8, urutan: 3),
+    Amalan(id: 'wangi_sebelum', nama: 'Memakai Wewangian sebelum Ihram', deskripsi: 'Disunahkan memakai minyak wangi di badan', jenis: JenisAmalan.sunnah, hariDzulhijjah: 8, urutan: 1),
+    Amalan(id: 'ihram', nama: 'Ihram dari Miqat / Tempat Tinggal', deskripsi: 'Niat ihram disertai mandi & memakai wewangian', jenis: JenisAmalan.rukun, hariDzulhijjah: 8, urutan: 2),
+    Amalan(id: 'talbiyah', nama: 'Mengucapkan Talbiyah', deskripsi: 'Mulai ihram hingga lontar Jumrah Aqabah', jenis: JenisAmalan.sunnah, hariDzulhijjah: 8, hariDzulhijjahEnd: 10, endConditionAmalanId: 'aqabah_10', urutan: 3),
     Amalan(id: 'berangkat_mina', nama: 'Berangkat ke Mina', deskripsi: 'Mabit di Mina malam 8 Dzulhijjah', jenis: JenisAmalan.wajib, hariDzulhijjah: 8, urutan: 4),
     Amalan(id: 'sholat_mina_8', nama: 'Sholat 5 Waktu di Mina (Qashar)', deskripsi: 'Dzuhur, Ashar, Maghrib, Isya, Subuh — qashar tanpa jamak', jenis: JenisAmalan.sunnah, hariDzulhijjah: 8, urutan: 5),
   ];

@@ -13,13 +13,14 @@ Dokumen ini mendokumentasikan protokol konteks, arsitektur layanan, dan standar 
 
 ## 2. Alur Data (Data Flow)
 1. **Clock** memancarkan state waktu aktif (`now`) + flag `isSimulationMode`.
-2. **PrayerTimeProvider** hanya memicu fetch saat *tanggal berubah* (day-key), lalu fetch via `PrayerTimeService` (API/fallback).
-3. **NotificationService** mendengarkan hasil `PrayerTimeProvider` dan:
-   - schedule pengingat sholat (Subuh/Dzuhur/Ashar/Maghrib/Isya) saat `isSimulationMode == false`
-   - cancel pengingat saat `isSimulationMode == true`
-4. **CurrentDayProvider** mengikuti hijri day dari clock (auto), tetapi berhenti override jika user memilih hari secara manual.
-5. **AmalanProvider** menyajikan daftar amalan + status checklist dari Hive; update checklist dilakukan atomik (tulis storage + update state).
-6. **UI** merender komponen berdasarkan gabungan state tersebut (termasuk banner simulasi dan state “Belum waktunya” di AmalanCard).
+2. **HijriProvider** menghitung tanggal Hijriah Umm al-Qura berdasarkan `now` dan `HijriAdjustment` dari storage.
+3. **PrayerTimeProvider** hanya memicu fetch saat *tanggal berubah* (day-key), lalu fetch via `PrayerTimeService` (API/fallback).
+4. **NotificationService** mendengarkan hasil `PrayerTimeProvider` dan:
+   - schedule pengingat sholat saat `isSimulationMode == false`.
+   - cancel pengingat saat `isSimulationMode == true`.
+5. **AmalanProvider** menyajikan daftar amalan + status checklist dari Hive.
+6. **Validation Logic**: `AmalanCard` dan `DetailPage` memvalidasi `now` vs `triggerTime` (jam) DAN `hijriDate` vs `amalan.hariDzulhijjah` (tanggal) untuk menentukan status kunci.
+7. **Ongoing Logic**: Filter dinamis pada `OngoingAmalanSheet` yang mengecek status `endConditionAmalanId` secara reaktif.
 
 ## 3. Protokol Penyimpanan (Hive)
 - **Box Name**: `amalan_checklist`

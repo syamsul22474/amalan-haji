@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/providers/amalan_provider.dart';
 import '../../core/providers/clock_provider.dart';
+import '../../core/providers/hijri_provider.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -135,6 +136,74 @@ class SettingsPage extends ConsumerWidget {
                           ),
                         ),
                       ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 14),
+                _SectionCard(
+                  title: 'Kalender Hijriah (Umm al-Qura)',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Sesuaikan tanggal Hijriah jika ada perbedaan penetapan resmi pemerintah Arab Saudi.',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          height: 1.4,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Text(
+                            'Koreksi Tanggal:',
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  final current = ref.read(hijriAdjustmentProvider);
+                                  ref.read(hijriAdjustmentProvider.notifier).setAdjustment(current - 1);
+                                },
+                                icon: const Icon(
+                                  Icons.remove_circle_outline,
+                                  color: AppColors.primaryGold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 70,
+                                child: Text(
+                                  ref.watch(hijriAdjustmentProvider) == 0
+                                      ? 'Normal'
+                                      : ref.watch(hijriAdjustmentProvider) > 0
+                                          ? '+${ref.watch(hijriAdjustmentProvider)} hari'
+                                          : '${ref.watch(hijriAdjustmentProvider)} hari',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  final current = ref.read(hijriAdjustmentProvider);
+                                  ref.read(hijriAdjustmentProvider.notifier).setAdjustment(current + 1);
+                                },
+                                icon: const Icon(
+                                  Icons.add_circle_outline,
+                                  color: AppColors.primaryGold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

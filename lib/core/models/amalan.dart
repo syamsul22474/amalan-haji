@@ -11,6 +11,8 @@ class Amalan {
   final String dalil;
   final JenisAmalan jenis;
   final int hariDzulhijjah;
+  final int? hariDzulhijjahEnd;
+  final String? endConditionAmalanId;
   final String? waktuTrigger;
   final String? waktuKeterangan;
   final bool sudahDilakukan;
@@ -23,6 +25,8 @@ class Amalan {
     this.dalil = '',
     required this.jenis,
     required this.hariDzulhijjah,
+    this.hariDzulhijjahEnd,
+    this.endConditionAmalanId,
     this.waktuTrigger,
     this.waktuKeterangan,
     this.sudahDilakukan = false,
@@ -39,6 +43,8 @@ class Amalan {
         dalil: dalil,
         jenis: jenis,
         hariDzulhijjah: hariDzulhijjah,
+        hariDzulhijjahEnd: hariDzulhijjahEnd,
+        endConditionAmalanId: endConditionAmalanId,
         waktuTrigger: waktuTrigger,
         waktuKeterangan: waktuKeterangan,
         sudahDilakukan: sudahDilakukan ?? this.sudahDilakukan,

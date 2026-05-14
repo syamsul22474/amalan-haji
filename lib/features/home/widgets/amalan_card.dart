@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:hijri/hijri_calendar.dart';
 import '../../../core/models/amalan.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/providers/amalan_provider.dart';
 import '../../../core/providers/clock_provider.dart';
+import '../../../core/providers/hijri_provider.dart';
 import '../../../core/providers/prayer_time_provider.dart';
 import '../../../core/models/prayer_time.dart';
 import '../../../shared/widgets/badge_widget.dart';
@@ -25,6 +27,7 @@ class AmalanCard extends ConsumerWidget {
         (s) => DateTime(s.now.year, s.now.month, s.now.day, s.now.hour, s.now.minute),
       ),
     );
+    final currentHijri = ref.watch(hijriDateProvider);
     final prayerTimeAsync = ref.watch(prayerTimeProvider);
 
     final triggerTime = prayerTimeAsync.maybeWhen(
@@ -34,6 +37,7 @@ class AmalanCard extends ConsumerWidget {
 
     final cardState = _resolveCardState(
       amalan: amalan,
+      currentHijri: currentHijri,
       now: now,
       triggerTime: triggerTime,
     );
@@ -64,14 +68,58 @@ class AmalanCard extends ConsumerWidget {
               Checkbox(
                 value: amalan.sudahDilakukan,
                 activeColor: AppColors.primaryGold,
-                onChanged: isLocked
-                    ? null
-                    : (value) {
-                        ref.read(amalanProvider.notifier).setAmalanStatus(
-                              amalan: amalan,
-                              status: value ?? false,
-                            );
-                      },
+                onChanged: (value) async {
+                  if (isLocked && value == true) {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Belum waktunya. Amalan ini dimulai ${_triggerLabel(amalan.waktuTrigger)?.toLowerCase() ?? 'pada waktunya'}.',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        backgroundColor: AppColors.wajibOrange,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                    return;
+                  }
+
+                  if (amalan.sudahDilakukan && value == false) {
+                    final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: AppColors.cardBackground,
+                        title: const Text(
+                          'Batalkan status?',
+                          style: TextStyle(color: AppColors.primaryGold),
+                        ),
+                        content: const Text(
+                          'Apakah Anda yakin ingin membatalkan status selesai untuk amalan ini?',
+                          style: TextStyle(color: AppColors.textPrimary),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Batal'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text(
+                              'Ya, Batalkan',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirmed != true) return;
+                  }
+
+                  ref.read(amalanProvider.notifier).setAmalanStatus(
+                        amalan: amalan,
+                        status: value ?? false,
+                      );
+                },
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -157,13 +205,26 @@ class AmalanCard extends ConsumerWidget {
 
 _AmalanCardState _resolveCardState({
   required Amalan amalan,
+  required HijriCalendar currentHijri,
   required DateTime now,
   required DateTime? triggerTime,
 }) {
   if (amalan.sudahDilakukan) return _AmalanCardState.selesai;
+
+  // 1. Cek Bulan: Jika sebelum Dzulhijjah (12)
+  if (currentHijri.hMonth < 12) return _AmalanCardState.belumWaktunya;
+  // Jika tahun depan atau setelah Dzulhijjah (Haji sudah lewat)
+  if (currentHijri.hMonth > 12) return _AmalanCardState.perluDikerjakan;
+
+  // 2. Cek Tanggal
+  if (currentHijri.hDay < amalan.hariDzulhijjah) return _AmalanCardState.belumWaktunya;
+  if (currentHijri.hDay > amalan.hariDzulhijjah) return _AmalanCardState.perluDikerjakan;
+
+  // 3. Hari yang sama, baru cek jam
   if (triggerTime != null && now.isBefore(triggerTime)) {
     return _AmalanCardState.belumWaktunya;
   }
+
   return _AmalanCardState.perluDikerjakan;
 }
 

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:confetti/confetti.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/models/amalan.dart';
 import '../../core/providers/amalan_provider.dart';
 import '../../core/providers/clock_provider.dart';
 import '../../core/providers/current_day_provider.dart';
 import '../progress/progress_page.dart';
 import '../settings/settings_page.dart';
 import 'widgets/amalan_card.dart';
+import 'widgets/date_header.dart';
 import 'widgets/day_selector.dart';
+import 'widgets/ongoing_amalan_sheet.dart';
+import 'widgets/progress_summary_card.dart';
 import 'widgets/waktu_sholat_bar.dart';
 import '../../shared/widgets/empty_state_widget.dart';
 
@@ -49,6 +52,103 @@ class _HomePageState extends ConsumerState<HomePage> {
     _wasAllDone = isAllDone;
   }
 
+  void _showRemainingAmalan(String title, List<Amalan> amalanList) {
+    final remaining = amalanList.where((a) => !a.sudahDilakukan).toList();
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.darkBackground,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              title,
+              style: const TextStyle(
+                color: AppColors.primaryGold,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              remaining.isEmpty
+                  ? 'Semua amalan kategori ini telah selesai dikerjakan. Alhamdulillah!'
+                  : 'Daftar amalan yang belum dikerjakan:',
+              style: const TextStyle(color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 20),
+            if (remaining.isNotEmpty)
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: remaining.length,
+                  itemBuilder: (context, index) {
+                    final item = remaining[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 6),
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: AppColors.primaryGold,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.nama,
+                                  style: const TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  'Hari ke-${item.hariDzulhijjah - 7} (${item.hariDzulhijjah} Dzulhijjah)',
+                                  style: const TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _confettiController.dispose();
@@ -71,6 +171,14 @@ class _HomePageState extends ConsumerState<HomePage> {
     final progress =
         amalanHariIni.isEmpty ? 0.0 : amalanSelesai / amalanHariIni.length;
 
+    final rukunAmalan = allAmalan.where((a) => a.jenis == JenisAmalan.rukun).toList();
+    final rukunSelesai = rukunAmalan.where((a) => a.sudahDilakukan).length;
+    final rukunProgress = rukunAmalan.isEmpty ? 0.0 : rukunSelesai / rukunAmalan.length;
+
+    final wajibAmalan = allAmalan.where((a) => a.jenis == JenisAmalan.wajib).toList();
+    final wajibSelesai = wajibAmalan.where((a) => a.sudahDilakukan).length;
+    final wajibProgress = wajibAmalan.isEmpty ? 0.0 : wajibSelesai / wajibAmalan.length;
+
     return Stack(
       children: [
         Scaffold(
@@ -86,6 +194,21 @@ class _HomePageState extends ConsumerState<HomePage> {
             backgroundColor: AppColors.darkBackground,
             elevation: 0,
             actions: [
+              IconButton(
+                tooltip: 'Amalan Berlangsung',
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (_) => const OngoingAmalanSheet(),
+                  );
+                },
+                icon: const Icon(
+                  Icons.auto_stories_rounded,
+                  color: AppColors.primaryGold,
+                ),
+              ),
               IconButton(
                 tooltip: 'Progress',
                 onPressed: () {
@@ -112,49 +235,36 @@ class _HomePageState extends ConsumerState<HomePage> {
           body: Column(
             children: [
               if (isSimulationMode) const _SimulationBanner(),
+              const DateHeader(),
               const WaktuSholatBar(),
               const DaySelector(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Row(
                   children: [
-                    CircularPercentIndicator(
-                      radius: 30.0,
-                      lineWidth: 6.0,
-                      percent: progress,
-                      center: Text(
-                        "${(progress * 100).toInt()}%",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
+                    ProgressSummaryCard(
+                      title: 'Hari Ini',
+                      subtitle: '$amalanSelesai dari ${amalanHariIni.length} selesai',
+                      progress: progress,
                       progressColor: AppColors.primaryGold,
-                      backgroundColor: AppColors.cardBackground,
-                      circularStrokeCap: CircularStrokeCap.round,
+                      onTap: () => _showRemainingAmalan('Belum Selesai Hari Ini', amalanHariIni),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Progres Hari Ini',
-                            style: TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            '$amalanSelesai dari ${amalanHariIni.length} amalan selesai',
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
+                    const SizedBox(width: 12),
+                    ProgressSummaryCard(
+                      title: 'Total Rukun',
+                      subtitle: '$rukunSelesai dari ${rukunAmalan.length} selesai',
+                      progress: rukunProgress,
+                      progressColor: AppColors.rukunRed,
+                      onTap: () => _showRemainingAmalan('Daftar Rukun Haji', rukunAmalan),
+                    ),
+                    const SizedBox(width: 12),
+                    ProgressSummaryCard(
+                      title: 'Total Wajib',
+                      subtitle: '$wajibSelesai dari ${wajibAmalan.length} selesai',
+                      progress: wajibProgress,
+                      progressColor: AppColors.wajibOrange,
+                      onTap: () => _showRemainingAmalan('Daftar Wajib Haji', wajibAmalan),
                     ),
                   ],
                 ),

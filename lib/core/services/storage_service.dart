@@ -21,4 +21,18 @@ class StorageService {
     final box = await Hive.openBox(_boxName);
     await box.clear();
   }
+
+  // Hijri Adjustment
+  static const _settingsBox = 'app_settings';
+  static const _hijriAdjKey = 'hijri_adjustment';
+
+  Future<void> setHijriAdjustment(int offset) async {
+    final box = await Hive.openBox(_settingsBox);
+    await box.put(_hijriAdjKey, offset);
+  }
+
+  Future<int> getHijriAdjustment() async {
+    final box = await Hive.openBox(_settingsBox);
+    return box.get(_hijriAdjKey, defaultValue: 0);
+  }
 }

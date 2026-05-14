@@ -10,7 +10,7 @@
 | **Framework** | Flutter + Dart |
 | **Backend** | Tidak diperlukan (Offline-first) |
 | **External API** | Aladhan API (Waktu Sholat Makkah) |
-| **Versi Dokumen** | v1.0 — Mei 2025 |
+| **Versi Dokumen** | v1.1 — Mei 2025 |
 
 ---
 
@@ -48,6 +48,10 @@ Ibadah haji merupakan rukun Islam kelima yang memiliki rangkaian amalan sangat k
 - Menampilkan waktu sholat Makkah secara real-time dari API eksternal
 - Memberikan notifikasi pengingat amalan berdasarkan waktu sholat
 - Menyediakan fitur simulasi tanggal/jam untuk keperluan testing
+- **Kalender Umm al-Qura**: Standar kalender Hijriah resmi Arab Saudi dengan fitur penyesuaian (adjustment) hari.
+- **Validasi Cerdas**: Mencegah pengerjaan amalan sebelum waktunya (berdasarkan tanggal dan jam).
+- **Proteksi Data**: Konfirmasi dialog saat membatalkan (uncheck) status amalan yang sudah selesai.
+- **Amalan Berlangsung**: Menu khusus untuk memantau amalan berkelanjutan (multi-day) hingga kondisi berakhirnya terpenuhi.
 
 ### 1.3 Target Pengguna
 
@@ -75,8 +79,8 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 
 | No | Nama Amalan | Kategori | Keterangan |
 |---|---|---|---|
-| 1 | Ihram dari Miqat / Tempat Tinggal | **RUKUN** | Niat ihram disertai mandi & memakai wewangian |
-| 2 | Memakai Wewangian sebelum Ihram | SUNNAH | Disunahkan memakai minyak wangi di badan |
+| 1 | Memakai Wewangian sebelum Ihram | SUNNAH | Disunahkan memakai minyak wangi di badan |
+| 2 | Ihram dari Miqat / Tempat Tinggal | **RUKUN** | Niat ihram disertai mandi & memakai wewangian |
 | 3 | Mengucapkan Talbiyah | SUNNAH | Mulai ihram hingga lontar Jumrah Aqabah |
 | 4 | Berangkat ke Mina | **WAJIB** | Mabit di Mina malam 8 Dzulhijjah |
 | 5 | Sholat 5 Waktu di Mina (Qashar) | SUNNAH | Dzuhur, Ashar, Maghrib, Isya, Subuh — qashar tanpa jamak |
@@ -256,6 +260,8 @@ class Amalan {
   final String dalil;            // Referensi hadis (opsional)
   final JenisAmalan jenis;       // rukun / wajib / sunnah
   final int hariDzulhijjah;      // 8, 9, 10, 11, 12, atau 13
+  final int? hariDzulhijjahEnd;  // Batas akhir hari (untuk amalan multi-day)
+  final String? endConditionAmalanId; // Dependency amalan lain untuk berhenti (misal: talbiyah berhenti saat aqabah selesai)
   final String? waktuTrigger;    // 'fajr'|'syuruq'|'dhuhr'|'asr'|'maghrib'|'isha'
   final String? waktuKeterangan; // e.g. "Setelah matahari terbenam"
   final bool sudahDilakukan;     // State checklist (tersimpan di Hive)
@@ -509,12 +515,17 @@ class ClockNotifier extends StateNotifier<DateTime> {
 
 Menampilkan amalan untuk hari yang sedang berlangsung.
 
-- **Header:** Tanggal Hijriah (misal *"9 Dzulhijjah 1446 H"*) + tanggal Masehi
-- **Bar Waktu Sholat:** 6 waktu sholat Makkah dalam scroll horizontal
-- **Progress Ring:** Persentase amalan hari ini yang sudah selesai
-- **Day Selector:** Tab/chip untuk beralih antar hari (8–13 Dzulhijjah)
-- **List Amalan:** Kartu-kartu amalan berurutan dengan badge jenis
-- Otomatis scroll ke hari yang sedang berjalan berdasarkan tanggal Hijriah
+- **Header:** Tanggal Hijriah Umm al-Qura (misal *"9 Dzulhijjah 1446 H"*) + Tanggal Masehi + Jam Aktif (Simulasi/Real).
+- **Bar Waktu Sholat:** 6 waktu sholat Makkah dalam scroll horizontal.
+- **Progress Dashboard (Horizontal):** 
+    - **Hari Ini**: Progres harian.
+    - **Total Rukun**: Progres kumulatif seluruh rukun.
+    - **Total Wajib**: Progres kumulatif seluruh wajib.
+- **Interactive Sheets**: Klik pada kartu rukun/wajib untuk melihat detail amalan yang tersisa.
+- **Ongoing Menu**: Icon khusus untuk melihat amalan berkelanjutan yang sedang aktif.
+- **Day Selector:** Tab/chip untuk beralih antar hari (8–13 Dzulhijjah).
+- **List Amalan:** Kartu-kartu amalan berurutan dengan badge jenis.
+- Otomatis scroll ke hari yang sedang berjalan berdasarkan tanggal Hijriah.
 
 #### Halaman 2: Detail Amalan
 
@@ -540,6 +551,7 @@ Ringkasan visual progress ibadah haji secara keseluruhan.
 
 - Toggle Mode Simulasi (dengan banner warning oranye)
 - Date & Time picker untuk set waktu simulasi
+- **Hijri Adjustment**: Pengaturan koreksi hari Hijriah (± hari) yang tersimpan permanen.
 - Quick buttons: set ke setiap hari haji (Tarwiyah, Arafah, dll)
 - Tombol Reset ke waktu nyata
 - Info versi aplikasi
