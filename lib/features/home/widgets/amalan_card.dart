@@ -68,58 +68,73 @@ class AmalanCard extends ConsumerWidget {
               Checkbox(
                 value: amalan.sudahDilakukan,
                 activeColor: AppColors.primaryGold,
-                onChanged: (value) async {
-                  if (isLocked && value == true) {
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Belum waktunya. Amalan ini dimulai ${_triggerLabel(amalan.waktuTrigger)?.toLowerCase() ?? 'pada waktunya'}.',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        backgroundColor: AppColors.wajibOrange,
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                    return;
-                  }
-
-                  if (amalan.sudahDilakukan && value == false) {
-                    final confirmed = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        backgroundColor: AppColors.cardBackground,
-                        title: const Text(
-                          'Batalkan status?',
-                          style: TextStyle(color: AppColors.primaryGold),
-                        ),
-                        content: const Text(
-                          'Apakah Anda yakin ingin membatalkan status selesai untuk amalan ini?',
-                          style: TextStyle(color: AppColors.textPrimary),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Batal'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, true),
-                            child: const Text(
-                              'Ya, Batalkan',
-                              style: TextStyle(color: Colors.red),
+                onChanged: (amalan.id == 'tahallul_awal' || amalan.id == 'tahallul_tsani')
+                    ? (value) {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Amalan ini dicentang otomatis oleh sistem berdasarkan penyelesaian amalan sebelumnya (Jumrah Aqabah, Bercukur, Thawaf & Sa\'i).',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
+                            backgroundColor: AppColors.wajibOrange,
+                            behavior: SnackBarBehavior.floating,
+                            duration: Duration(seconds: 4),
                           ),
-                        ],
-                      ),
-                    );
-                    if (confirmed != true) return;
-                  }
+                        );
+                      }
+                    : (value) async {
+                        if (isLocked && value == true) {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Belum waktunya. Amalan ini dimulai ${_triggerLabel(amalan.waktuTrigger)?.toLowerCase() ?? 'pada waktunya'}.',
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              backgroundColor: AppColors.wajibOrange,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                          return;
+                        }
 
-                  ref.read(amalanProvider.notifier).setAmalanStatus(
-                        amalan: amalan,
-                        status: value ?? false,
-                      );
-                },
+                        if (amalan.sudahDilakukan && value == false) {
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              backgroundColor: AppColors.cardBackground,
+                              title: const Text(
+                                'Batalkan status?',
+                                style: TextStyle(color: AppColors.primaryGold),
+                              ),
+                              content: const Text(
+                                'Apakah Anda yakin ingin membatalkan status selesai untuk amalan ini?',
+                                style: TextStyle(color: AppColors.textPrimary),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: const Text('Batal'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text(
+                                    'Ya, Batalkan',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirmed != true) return;
+                        }
+
+                        ref.read(amalanProvider.notifier).setAmalanStatus(
+                              amalan: amalan,
+                              status: value ?? false,
+                            );
+                      },
               ),
               const SizedBox(width: 8),
               Expanded(

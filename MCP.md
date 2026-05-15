@@ -20,7 +20,8 @@ Dokumen ini mendokumentasikan protokol konteks, arsitektur layanan, dan standar 
    - cancel pengingat saat `isSimulationMode == true`.
 5. **AmalanProvider** menyajikan daftar amalan + status checklist dari Hive.
 6. **Validation Logic**: `AmalanCard` dan `DetailPage` memvalidasi `now` vs `triggerTime` (jam) DAN `hijriDate` vs `amalan.hariDzulhijjah` (tanggal) untuk menentukan status kunci.
-7. **Ongoing Logic**: Filter dinamis pada `OngoingAmalanSheet` yang mengecek status `endConditionAmalanId` secara reaktif.
+7. **Auto-check Logic**: Provider `amalanProvider` secara otomatis mengalkulasi dan mencentang "Tahallul Awal" dan "Tahallul Tsani" berdasarkan status gabungan dari amalan spesifik (Jumrah, Cukur, Thawaf, Sa'i), menonaktifkan interaksi manual dari UI.
+8. **Ongoing Logic**: Filter dinamis pada `OngoingAmalanSheet` yang mengecek status `endConditionAmalanId` secara reaktif.
 
 ## 3. Protokol Penyimpanan (Hive)
 - **Box Name**: `amalan_checklist`

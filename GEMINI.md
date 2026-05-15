@@ -35,11 +35,12 @@ Fitur kritis untuk pengujian.
 
 ## 6. Implementasi Terbaru (Ringkas)
 - **Kalender Umm al-Qura**: Menggunakan standar resmi Arab Saudi dengan fitur `HijriAdjustment` yang dipersistenkan di Hive.
-- **Home Dashboard**: Redesain progres menggunakan kartu horizontal (Hari Ini, Rukun, Wajib) dengan desain Glassmorphism dan interaksi Bottom Sheet untuk amalan tersisa.
+- **Home Dashboard**: Redesain progres menggunakan kartu horizontal (Hari Ini, Rukun, Wajib) dengan desain Glassmorphism dan interaksi Bottom Sheet untuk amalan tersisa. Mengganti nama aplikasi menjadi "Ceklis Amalan Haji".
 - **Validasi Amalan**:
     - **Time & Date Lock**: Amalan terkunci jika belum masuk tanggal Hijriah atau jam pelaksanaannya.
     - **Warning Snackbar**: Pesan edukatif saat mencoba mencentang amalan yang terkunci.
     - **Uncheck Protection**: Dialog konfirmasi saat membatalkan status amalan yang sudah selesai.
+    - **Auto-check Logic**: Amalan "Tahallul Awal" dan "Tahallul Tsani" dicentang otomatis oleh sistem (mengunci interaksi manual dari pengguna) berdasarkan progres penyelesaian amalan Lontar Jumrah Aqabah, Bercukur, Thawaf Ifadhah, dan Sa'i.
 - **Ongoing Amalan**: Fitur monitoring amalan berkelanjutan (seperti Talbiyah) yang berakhir berdasarkan dependency amalan lain (seperti Lontar Jumrah Aqabah).
 - **Date Header**: Tampilan real-time jam simulasi untuk memudahkan pengujian.
-- **Amalan Data**: Penyesuaian urutan 8 Dzulhijjah (Wewangian sebelum Ihram).
+- **Pembaruan Data Fiqih**: Penyesuaian urutan, status wajib/sunnah, dan deskripsi waktu untuk amalan tanggal 8-10 Dzulhijjah sesuai arahan terbaru.

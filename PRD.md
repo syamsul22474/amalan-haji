@@ -82,35 +82,36 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 | 1 | Memakai Wewangian sebelum Ihram | SUNNAH | Disunahkan memakai minyak wangi di badan |
 | 2 | Ihram dari Miqat / Tempat Tinggal | **RUKUN** | Niat ihram disertai mandi & memakai wewangian |
 | 3 | Mengucapkan Talbiyah | SUNNAH | Mulai ihram hingga lontar Jumrah Aqabah |
-| 4 | Berangkat ke Mina | **WAJIB** | Mabit di Mina malam 8 Dzulhijjah |
+| 4 | Berangkat ke Mina | SUNNAH | Mabit di Mina malam 8 Dzulhijjah |
 | 5 | Sholat 5 Waktu di Mina (Qashar) | SUNNAH | Dzuhur, Ashar, Maghrib, Isya, Subuh — qashar tanpa jamak |
 
 #### Hari ke-2: 9 Dzulhijjah (Hari Arafah)
 
 | No | Nama Amalan | Kategori | Keterangan |
 |---|---|---|---|
-| 1 | Bertolak ke Arafah setelah Subuh | **WAJIB** | Berangkat setelah matahari terbit |
+| 1 | Bertolak ke Arafah setelah Subuh | SUNNAH | Berangkat setelah matahari terbit |
 | 2 | Sholat Dzuhur & Ashar Jamak Qashar | SUNNAH | Dijamak taqdim, diqashar di Arafah |
-| 3 | Wukuf di Arafah | **RUKUN** | Hadir di Arafah dari tergelincir matahari hingga terbenam |
+| 3 | Wukuf di Arafah | **RUKUN** | Rukun: Hadir di Arafah. Wajib: Hadir di Arafah dari tergelincir matahari hingga terbenam |
 | 4 | Perbanyak Dzikir & Doa di Arafah | SUNNAH | Menghadap kiblat, angkat tangan |
-| 5 | Bertolak ke Muzdalifah setelah Maghrib | **WAJIB** | Berangkat setelah matahari terbenam dengan tenang |
+| 5 | Bertolak ke Muzdalifah setelah Maghrib | SUNNAH | Berangkat setelah matahari terbenam dengan tenang |
 | 6 | Mabit di Muzdalifah | **WAJIB** | Menginap hingga terbit fajar |
-| 7 | Sholat Maghrib & Isya Jamak Takhir Qashar | **WAJIB** | Di Muzdalifah, satu azan dua iqamat |
-| 8 | Sholat Subuh di Awal Waktu | SUNNAH | Di Muzdalifah, lebih awal dari biasanya |
-| 9 | Kumpulkan Kerikil untuk Lontar Jumrah | SUNNAH | 49 batu (Nafar Awal) atau 70 batu (Nafar Tsani) |
+| 7 | Sholat Maghrib & Isya Jamak Takhir Qashar | SUNNAH | Di Muzdalifah, satu azan dua iqamat |
 
 #### Hari ke-3: 10 Dzulhijjah (Idul Adha / Hari Nahr)
 
 | No | Nama Amalan | Kategori | Keterangan |
 |---|---|---|---|
-| 1 | Bertolak ke Mina sebelum Matahari Terbit | **WAJIB** | Berangkat setelah sholat Subuh |
-| 2 | Lontar Jumrah Aqabah | **WAJIB** | 7 batu, waktu Dhuha, bertakbir setiap lemparan |
-| 3 | Menyembelih Hewan Kurban (Hadyu) | **WAJIB** | Bagi yang mampu, setelah lontar Jumrah Aqabah |
-| 4 | Tahallul Awal — Bercukur/Potong Rambut | **WAJIB** | Cukur atau potong rambut merata, boleh pakai pakaian biasa |
-| 5 | Thawaf Ifadhah | **RUKUN** | 7 putaran Ka'bah, ramal di 3 putaran pertama |
-| 6 | Sa'i Shafa-Marwah | **RUKUN** | 7 kali, berlari kecil di lembah al-Masil |
-| 7 | Tahallul Tsani — Halal Sepenuhnya | **WAJIB** | Semua larangan ihram halal termasuk hubungan suami istri |
-| 8 | Mabit di Mina malam 11 Dzulhijjah | **WAJIB** | Kembali ke Mina setelah Thawaf Ifadhah |
+| 1 | Sholat Subuh di Awal Waktu | SUNNAH | Di Muzdalifah, lebih awal dari biasanya |
+| 2 | Berdoa Kepada Allah hingga menjelang terbit matahari | SUNNAH | Sebelum matahari terbit |
+| 3 | Bertolak ke Mina sebelum Matahari Terbit | SUNNAH | Berangkat sebelum matahari terbit |
+| 4 | Lontar Jumrah Aqabah | **WAJIB** | 7 batu, bertakbir setiap lemparan. Waktu: Tengah malam 10 Dzul s.d sebelum Subuh 11 Dzul |
+| 5 | Menyembelih Hewan Kurban (Hadyu) | **WAJIB** | Diwajibkan bagi yang berhaji Tamattu dan Qiron. Waktu: 10 s.d terbenam 13 Dzul |
+| 6 | Bercukur/Potong Rambut | **WAJIB** | Cukur atau potong rambut merata (mencukur rambut dari segala sisi kepala) |
+| 7 | Thawaf Ifadhah | **RUKUN** | 7 putaran Ka'bah, tidak disunahkan roml. Sunnah siang 10 Dzul. |
+| 8 | Sa'i Shafa-Marwah | **RUKUN** | 7 kali, berlari kecil di lembah al-Masil |
+| 9 | Tahallul Awal | **WAJIB** | Dihalalkan segala sesuatu kecuali hal yang berkaitan dengan wanita yaitu berjimak, mubasyarah (bercumbu), dan akad nikah. |
+| 10 | Tahallul Tsani | **WAJIB** | Telah halal segala yang sebelumnya diharamkan saat ihram |
+| 11 | Mabit di Mina malam 11 Dzulhijjah | **WAJIB** | Kembali ke Mina setelah Thawaf Ifadhah |
 
 #### Hari ke-4: 11 Dzulhijjah (Tasyriq Pertama)
 

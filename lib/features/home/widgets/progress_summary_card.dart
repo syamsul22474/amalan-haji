@@ -24,8 +24,8 @@ class ProgressSummaryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: GlassmorphicContainer(
-        width: 160,
-        height: 90,
+        width: double.infinity,
+        height: 80,
         borderRadius: 16,
         blur: 15,
         alignment: Alignment.center,
@@ -47,7 +47,7 @@ class ProgressSummaryCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
           child: Row(
             children: [
               CircularPercentIndicator(

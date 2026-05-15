@@ -24,6 +24,7 @@ class AmalanNotifier extends StateNotifier<List<Amalan>> {
       updatedList.add(amalan.copyWith(sudahDilakukan: status));
     }
     state = updatedList;
+    await _checkTahallulConditions();
   }
 
   Future<void> refreshFromStorage() async {
@@ -42,6 +43,39 @@ class AmalanNotifier extends StateNotifier<List<Amalan>> {
     state = state.map((a) {
       return a.id == amalan.id ? a.copyWith(sudahDilakukan: status) : a;
     }).toList();
+
+    if (['aqabah_10', 'cukur_10', 'thawaf_ifadhah', 'sai'].contains(amalan.id)) {
+      await _checkTahallulConditions();
+    }
+  }
+
+  Future<void> _checkTahallulConditions() async {
+    final aqabah = state.where((a) => a.id == 'aqabah_10').firstOrNull?.sudahDilakukan ?? false;
+    final cukur = state.where((a) => a.id == 'cukur_10').firstOrNull?.sudahDilakukan ?? false;
+    final thawaf = state.where((a) => a.id == 'thawaf_ifadhah').firstOrNull?.sudahDilakukan ?? false;
+    final sai = state.where((a) => a.id == 'sai').firstOrNull?.sudahDilakukan ?? false;
+
+    final thawafSaiDone = thawaf && sai;
+    
+    int completedCount = 0;
+    if (aqabah) completedCount++;
+    if (cukur) completedCount++;
+    if (thawafSaiDone) completedCount++;
+
+    final shouldAwal = completedCount >= 2;
+    final shouldTsani = completedCount == 3;
+
+    final awal = state.where((a) => a.id == 'tahallul_awal').firstOrNull;
+    if (awal != null && awal.sudahDilakukan != shouldAwal) {
+      await _storageService.setAmalanStatus(awal.hariDzulhijjah, awal.id, shouldAwal);
+      state = state.map((a) => a.id == awal.id ? a.copyWith(sudahDilakukan: shouldAwal) : a).toList();
+    }
+
+    final tsani = state.where((a) => a.id == 'tahallul_tsani').firstOrNull;
+    if (tsani != null && tsani.sudahDilakukan != shouldTsani) {
+      await _storageService.setAmalanStatus(tsani.hariDzulhijjah, tsani.id, shouldTsani);
+      state = state.map((a) => a.id == tsani.id ? a.copyWith(sudahDilakukan: shouldTsani) : a).toList();
+    }
   }
 
   Future<void> resetAll() async {

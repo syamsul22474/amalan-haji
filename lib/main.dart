@@ -70,7 +70,7 @@ class _AmalanHajiAppState extends ConsumerState<AmalanHajiApp> {
     );
 
     return MaterialApp(
-      title: 'Amalan Haji',
+      title: 'Ceklis Amalan Haji',
       theme: ThemeData.dark(useMaterial3: true).copyWith(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFD4AF37),

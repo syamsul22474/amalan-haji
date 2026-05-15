@@ -13,6 +13,7 @@ import 'widgets/date_header.dart';
 import 'widgets/day_selector.dart';
 import 'widgets/ongoing_amalan_sheet.dart';
 import 'widgets/progress_summary_card.dart';
+import 'widgets/today_progress_linear_card.dart';
 import 'widgets/waktu_sholat_bar.dart';
 import '../../shared/widgets/empty_state_widget.dart';
 
@@ -185,7 +186,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           backgroundColor: AppColors.darkBackground,
           appBar: AppBar(
             title: const Text(
-              'Amalan Haji',
+              'Ceklis Amalan Haji',
               style: TextStyle(
                 color: AppColors.primaryGold,
                 fontWeight: FontWeight.bold,
@@ -238,33 +239,40 @@ class _HomePageState extends ConsumerState<HomePage> {
               const DateHeader(),
               const WaktuSholatBar(),
               const DaySelector(),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Row(
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   children: [
-                    ProgressSummaryCard(
-                      title: 'Hari Ini',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ProgressSummaryCard(
+                            title: 'Total Rukun',
+                            subtitle: '$rukunSelesai dari ${rukunAmalan.length} selesai',
+                            progress: rukunProgress,
+                            progressColor: AppColors.rukunRed,
+                            onTap: () => _showRemainingAmalan('Daftar Rukun Haji', rukunAmalan),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: ProgressSummaryCard(
+                            title: 'Total Wajib',
+                            subtitle: '$wajibSelesai dari ${wajibAmalan.length} selesai',
+                            progress: wajibProgress,
+                            progressColor: AppColors.wajibOrange,
+                            onTap: () => _showRemainingAmalan('Daftar Wajib Haji', wajibAmalan),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    TodayProgressLinearCard(
+                      title: 'Progres Hari Ini',
                       subtitle: '$amalanSelesai dari ${amalanHariIni.length} selesai',
                       progress: progress,
                       progressColor: AppColors.primaryGold,
                       onTap: () => _showRemainingAmalan('Belum Selesai Hari Ini', amalanHariIni),
-                    ),
-                    const SizedBox(width: 12),
-                    ProgressSummaryCard(
-                      title: 'Total Rukun',
-                      subtitle: '$rukunSelesai dari ${rukunAmalan.length} selesai',
-                      progress: rukunProgress,
-                      progressColor: AppColors.rukunRed,
-                      onTap: () => _showRemainingAmalan('Daftar Rukun Haji', rukunAmalan),
-                    ),
-                    const SizedBox(width: 12),
-                    ProgressSummaryCard(
-                      title: 'Total Wajib',
-                      subtitle: '$wajibSelesai dari ${wajibAmalan.length} selesai',
-                      progress: wajibProgress,
-                      progressColor: AppColors.wajibOrange,
-                      onTap: () => _showRemainingAmalan('Daftar Wajib Haji', wajibAmalan),
                     ),
                   ],
                 ),
