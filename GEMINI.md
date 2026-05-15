@@ -54,3 +54,10 @@ Fitur kritis untuk pengujian.
     - Memperbarui waktu sholat default (*hardcode*) untuk menyesuaikan dengan waktu aktual musim haji akhir Mei 2026.
     - Implementasi *caching* otomatis ke Hive (`prayer_times_cache`). Jika ada internet, jadwal diunduh dan disimpan; jika *offline*, jadwal dimuat dari cache lokal tanpa *error*.
     - Menambahkan label "*Waktu sholat untuk wilayah Makkah" di dasbor untuk mencegah kerancuan zona waktu bagi jamaah.
+
+## 7. Distribusi & CI/CD (Firebase App Distribution)
+- **Tools**: Menggunakan `firebase-tools` (lokal) dan `flutterfire_cli`.
+- **Workflow**: 
+    1. Login via `npx firebase login`.
+    2. Konfigurasi via `flutterfire configure`.
+    3. Eksekusi script `./scripts/distribute_android.sh` untuk otomatisasi build & upload APK ke grup "testers".
