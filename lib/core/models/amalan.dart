@@ -3,6 +3,7 @@ enum JenisAmalan {
   wajib,
   sunnah,
   pilihan,
+  status,
 }
 
 class Amalan {

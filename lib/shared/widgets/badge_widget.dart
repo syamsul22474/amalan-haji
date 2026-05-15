@@ -14,6 +14,7 @@ class BadgeWidget extends StatelessWidget {
       JenisAmalan.wajib => ('WAJIB', AppColors.wajibOrange),
       JenisAmalan.sunnah => ('SUNNAH', AppColors.sunnahGreen),
       JenisAmalan.pilihan => ('PILIHAN', Colors.blue),
+      JenisAmalan.status => ('STATUS', Colors.teal),
     };
 
     return Container(

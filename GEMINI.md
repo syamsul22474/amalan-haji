@@ -47,6 +47,6 @@ Fitur kritis untuk pengujian.
 - **Pembaruan Data & Logika Nafar**:
     - **Nafar Awal Logic**: Validasi waktu "Meninggalkan Mina" di tanggal 12 (harus sebelum Maghrib). Kegagalan Nafar Awal akan memunculkan kembali Tab Tanggal 13 agar jamaah bisa menyelesaikan ritual Nafar Tsani.
     - **Tab Pulang**: Penambahan tab khusus "Pulang" (ID hari 99) untuk ritual Thawaf Wada' agar tidak terikat tanggal tertentu.
-    - **Jenis Amalan Pilihan**: Menambahkan kategori `pilihan` (badge biru) untuk "Nafar Awal" agar tidak mengganggu statistik Wajib Haji.
-    - **Thawaf Wada Details**: Penjelasan detail mengenai ketentuan Thawaf Wada dan uzur bagi wanita haid.
+    - **Jenis Amalan Pilihan & Status**: Menambahkan kategori `pilihan` (badge biru) untuk "Nafar Awal" dan kategori `status` (badge teal) untuk "Tahallul Awal/Tsani". Kategori `status` dikecualikan dari seluruh perhitungan progres (Wajib Haji & Progres Harian).
     - **Fix Lock 99**: Pengecualian proteksi tanggal untuk amalan dengan hariDzulhijjah 99 agar tidak terkunci secara otomatis.
+    - **Landscape Scrolling**: Implementasi scroll vertikal tunggal pada Home Dashboard untuk mencegah overflow pada mode landscape.

@@ -71,6 +71,7 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 | **WAJIB** | `[WAJIB]` | 🟠 Oranye `#E65100` | Sah tapi wajib bayar dam jika ditinggal |
 | **SUNNAH** | `[SUNNAH]` | 🟢 Hijau `#2E7D32` | Dianjurkan untuk menyempurnakan pahala |
 | **PILIHAN** | `[PILIHAN]` | 🔵 Biru `Colors.blue` | Pilihan manasik (seperti Nafar Awal) |
+| **STATUS** | `[STATUS]` | 💠 Teal `Colors.teal` | Indikator status (tidak masuk hitungan progres) |
 
 ---
 
@@ -110,8 +111,8 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 | 6 | Bercukur/Potong Rambut | **WAJIB** | Cukur atau potong rambut merata (mencukur rambut dari segala sisi kepala) |
 | 7 | Thawaf Ifadhah | **RUKUN** | 7 putaran Ka'bah, tidak disunahkan roml. Sunnah siang 10 Dzul. |
 | 8 | Sa'i Shafa-Marwah | **RUKUN** | 7 kali, berlari kecil di lembah al-Masil |
-| 9 | Tahallul Awal | **WAJIB** | Dihalalkan segala sesuatu kecuali hal yang berkaitan dengan wanita yaitu berjimak, mubasyarah (bercumbu), dan akad nikah. |
-| 10 | Tahallul Tsani | **WAJIB** | Telah halal segala yang sebelumnya diharamkan saat ihram |
+| 9 | Tahallul Awal | STATUS | Dihalalkan segala sesuatu kecuali hal yang berkaitan dengan wanita |
+| 10 | Tahallul Tsani | STATUS | Telah halal segala yang sebelumnya diharamkan saat ihram |
 | 11 | Mabit di Mina malam 11 Dzulhijjah | **WAJIB** | Kembali ke Mina setelah Thawaf Ifadhah |
 
 #### Hari ke-4: 11 Dzulhijjah (Tasyriq Pertama)
@@ -270,6 +271,7 @@ enum JenisAmalan {
   wajib,   // Harus dikerjakan — bayar dam jika ditinggal
   sunnah,  // Dianjurkan — menyempurnakan pahala
   pilihan, // Pilihan manasik (e.g. Nafar Awal)
+  status,  // Indikator status (e.g. Tahallul) — tidak masuk progres
 }
 ```
 
@@ -536,7 +538,7 @@ class ClockNotifier extends StateNotifier<DateTime> {
 
 #### Halaman 1: Home / Timeline (Halaman Utama)
 
-Menampilkan amalan untuk hari yang sedang berlangsung.
+Menampilkan amalan untuk hari yang sedang berlangsung. Halaman ini menggunakan scroll vertikal tunggal untuk mendukung tampilan landscape.
 
 - **Header:** Tanggal Hijriah Umm al-Qura (misal *"9 Dzulhijjah 1446 H"*) + Tanggal Masehi + Jam Aktif (Simulasi/Real).
 - **Bar Waktu Sholat:** 6 waktu sholat Makkah dalam scroll horizontal.

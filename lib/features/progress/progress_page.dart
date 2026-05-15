@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/models/amalan.dart';
 import '../../core/providers/amalan_provider.dart';
 import '../../core/providers/clock_provider.dart';
 
@@ -15,8 +16,9 @@ class ProgressPage extends ConsumerWidget {
         ref.watch(clockProvider.select((s) => s.isSimulationMode));
     final allAmalan = ref.watch(amalanProvider);
 
-    final total = allAmalan.length;
-    final totalDone = allAmalan.where((a) => a.sudahDilakukan).length;
+    final amalanForProgress = allAmalan.where((a) => a.jenis != JenisAmalan.status).toList();
+    final total = amalanForProgress.length;
+    final totalDone = amalanForProgress.where((a) => a.sudahDilakukan).length;
     final totalProgress = total == 0 ? 0.0 : totalDone / total;
 
     return Scaffold(
@@ -57,12 +59,13 @@ class ProgressPage extends ConsumerWidget {
                   final day = 8 + index;
                   final list = allAmalan.where((a) => a.hariDzulhijjah == day).toList()
                     ..sort((a, b) => a.urutan.compareTo(b.urutan));
-                  final done = list.where((a) => a.sudahDilakukan).length;
-                  final percent = list.isEmpty ? 0.0 : done / list.length;
+                  final listForProgress = list.where((a) => a.jenis != JenisAmalan.status).toList();
+                  final done = listForProgress.where((a) => a.sudahDilakukan).length;
+                  final percent = listForProgress.isEmpty ? 0.0 : done / listForProgress.length;
                   return _DayProgressCard(
                     day: day,
                     done: done,
-                    total: list.length,
+                    total: listForProgress.length,
                     percent: percent,
                   );
                 }),

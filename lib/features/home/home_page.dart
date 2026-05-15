@@ -40,7 +40,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     final currentDay = ref.read(currentDayProvider);
     final allAmalan = ref.read(amalanProvider);
 
-    final amalanHariIni = allAmalan.where((a) => a.hariDzulhijjah == currentDay).toList();
+    final amalanHariIni = allAmalan
+        .where((a) =>
+            a.hariDzulhijjah == currentDay && a.jenis != JenisAmalan.status)
+        .toList();
     if (amalanHariIni.isEmpty) {
       _wasAllDone = false;
       return;
@@ -185,9 +188,13 @@ class _HomePageState extends ConsumerState<HomePage> {
       return true;
     }).toList();
 
-    final amalanSelesai = amalanHariIni.where((a) => a.sudahDilakukan).length;
-    final progress =
-        amalanHariIni.isEmpty ? 0.0 : amalanSelesai / amalanHariIni.length;
+    final amalanHariIniForProgress =
+        amalanHariIni.where((a) => a.jenis != JenisAmalan.status).toList();
+    final amalanSelesai =
+        amalanHariIniForProgress.where((a) => a.sudahDilakukan).length;
+    final progress = amalanHariIniForProgress.isEmpty
+        ? 0.0
+        : amalanSelesai / amalanHariIniForProgress.length;
 
     final rukunAmalan = allAmalan.where((a) => a.jenis == JenisAmalan.rukun).toList();
     final rukunSelesai = rukunAmalan.where((a) => a.sudahDilakukan).length;
@@ -207,6 +214,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               style: TextStyle(
                 color: AppColors.primaryGold,
                 fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
             ),
             backgroundColor: AppColors.darkBackground,
@@ -250,7 +258,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ],
           ),
-          body: Column(
+          body: ListView(
             children: [
               if (isSimulationMode) const _SimulationBanner(),
               const DateHeader(),
@@ -265,20 +273,24 @@ class _HomePageState extends ConsumerState<HomePage> {
                         Expanded(
                           child: ProgressSummaryCard(
                             title: 'Total Rukun',
-                            subtitle: '$rukunSelesai dari ${rukunAmalan.length} selesai',
+                            subtitle:
+                                '$rukunSelesai dari ${rukunAmalan.length} selesai',
                             progress: rukunProgress,
                             progressColor: AppColors.rukunRed,
-                            onTap: () => _showRemainingAmalan('Daftar Rukun Haji', rukunAmalan),
+                            onTap: () => _showRemainingAmalan(
+                                'Daftar Rukun Haji', rukunAmalan),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: ProgressSummaryCard(
                             title: 'Total Wajib',
-                            subtitle: '$wajibSelesai dari ${wajibAmalan.length} selesai',
+                            subtitle:
+                                '$wajibSelesai dari ${wajibAmalan.length} selesai',
                             progress: wajibProgress,
                             progressColor: AppColors.wajibOrange,
-                            onTap: () => _showRemainingAmalan('Daftar Wajib Haji', wajibAmalan),
+                            onTap: () => _showRemainingAmalan(
+                                'Daftar Wajib Haji', wajibAmalan),
                           ),
                         ),
                       ],
@@ -286,27 +298,24 @@ class _HomePageState extends ConsumerState<HomePage> {
                     const SizedBox(height: 12),
                     TodayProgressLinearCard(
                       title: 'Progres Hari Ini',
-                      subtitle: '$amalanSelesai dari ${amalanHariIni.length} selesai',
+                      subtitle:
+                          '$amalanSelesai dari ${amalanHariIniForProgress.length} selesai',
                       progress: progress,
                       progressColor: AppColors.primaryGold,
-                      onTap: () => _showRemainingAmalan('Belum Selesai Hari Ini', amalanHariIni),
+                      onTap: () => _showRemainingAmalan(
+                          'Belum Selesai Hari Ini', amalanHariIni),
                     ),
                   ],
                 ),
               ),
-              Expanded(
-                child: amalanHariIni.isEmpty
-                    ? const EmptyStateWidget(
-                        message:
-                            'Belum ada amalan untuk hari ini. Coba pilih hari lain.',
-                      )
-                    : ListView.builder(
-                        itemCount: amalanHariIni.length,
-                        itemBuilder: (context, index) {
-                          return AmalanCard(amalan: amalanHariIni[index]);
-                        },
-                      ),
-              ),
+              if (amalanHariIni.isEmpty)
+                const EmptyStateWidget(
+                  message:
+                      'Belum ada amalan untuk hari ini. Coba pilih hari lain.',
+                )
+              else
+                ...amalanHariIni.map((a) => AmalanCard(amalan: a)),
+              const SizedBox(height: 24),
             ],
           ),
         ),

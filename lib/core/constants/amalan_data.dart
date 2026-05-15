@@ -61,8 +61,8 @@ class AmalanData {
       waktuKeterangan: 'Waktu Mulai : Lewat tengah malam Tanggal 10 Dzulhijjah\nWaktu Berakhir : Tidak ada batas waktu',
     ),
     Amalan(id: 'sai', nama: 'Sa\'i Shafa-Marwah', deskripsi: '7 kali, berlari kecil di lembah al-Masil', jenis: JenisAmalan.rukun, hariDzulhijjah: 10, urutan: 8),
-    Amalan(id: 'tahallul_awal', nama: 'Tahallul Awal', deskripsi: 'Dihalalkan segala sesuatu kecuali hal yang berkaitan dengan wanita yaitu berjimak, mubasyarah (bercumbu), dan akad nikah.', jenis: JenisAmalan.wajib, hariDzulhijjah: 10, urutan: 9),
-    Amalan(id: 'tahallul_tsani', nama: 'Tahallul Tsani', deskripsi: 'Telah halal segala yang sebelumnya diharamkan saat ihram', jenis: JenisAmalan.wajib, hariDzulhijjah: 10, urutan: 10),
+    Amalan(id: 'tahallul_awal', nama: 'Tahallul Awal', deskripsi: 'Dihalalkan segala sesuatu kecuali hal yang berkaitan dengan wanita yaitu berjimak, mubasyarah (bercumbu), dan akad nikah.', jenis: JenisAmalan.status, hariDzulhijjah: 10, urutan: 9),
+    Amalan(id: 'tahallul_tsani', nama: 'Tahallul Tsani', deskripsi: 'Telah halal segala yang sebelumnya diharamkan saat ihram', jenis: JenisAmalan.status, hariDzulhijjah: 10, urutan: 10),
     Amalan(
       id: 'mabit_mina_10',
       nama: 'Mabit di Mina malam 11 Dzulhijjah',
