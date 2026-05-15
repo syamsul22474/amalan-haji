@@ -50,3 +50,7 @@ Fitur kritis untuk pengujian.
     - **Jenis Amalan Pilihan & Status**: Menambahkan kategori `pilihan` (badge biru) untuk "Nafar Awal" dan kategori `status` (badge teal) untuk "Tahallul Awal/Tsani". Kategori `status` dikecualikan dari seluruh perhitungan progres (Wajib Haji & Progres Harian).
     - **Fix Lock 99**: Pengecualian proteksi tanggal untuk amalan dengan hariDzulhijjah 99 agar tidak terkunci secara otomatis.
     - **Landscape Scrolling**: Implementasi scroll vertikal tunggal pada Home Dashboard untuk mencegah overflow pada mode landscape.
+- **Prayer Times Offline Caching**:
+    - Memperbarui waktu sholat default (*hardcode*) untuk menyesuaikan dengan waktu aktual musim haji akhir Mei 2026.
+    - Implementasi *caching* otomatis ke Hive (`prayer_times_cache`). Jika ada internet, jadwal diunduh dan disimpan; jika *offline*, jadwal dimuat dari cache lokal tanpa *error*.
+    - Menambahkan label "*Waktu sholat untuk wilayah Makkah" di dasbor untuk mencegah kerancuan zona waktu bagi jamaah.

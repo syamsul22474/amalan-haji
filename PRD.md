@@ -166,7 +166,7 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 
 ### 3.1 Prinsip Utama: Offline-First, No Backend Required
 
-> Aplikasi bekerja penuh **tanpa server backend** (tidak perlu Laravel, FastAPI, Node.js, dll). Satu-satunya koneksi internet yang dibutuhkan adalah untuk mengambil jadwal waktu sholat dari Aladhan API. Seluruh data amalan disimpan hardcoded di Dart, dan progress checklist user disimpan di local storage (Hive) di dalam perangkat user.
+> Aplikasi bekerja penuh **tanpa server backend** (tidak perlu Laravel, FastAPI, Node.js, dll). Koneksi internet hanya dibutuhkan untuk mengambil jadwal waktu sholat dari Aladhan API. Jadwal yang berhasil diunduh akan di-*cache* (disimpan) secara lokal di perangkat. Jika tidak ada internet, aplikasi akan menggunakan jadwal dari *cache*, atau *fallback* ke jadwal standar (waktu aktual Hajj 2026) jika cache kosong. Seluruh data amalan disimpan hardcoded di Dart, dan progress checklist user disimpan di local storage (Hive) di dalam perangkat user.
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -541,7 +541,7 @@ class ClockNotifier extends StateNotifier<DateTime> {
 Menampilkan amalan untuk hari yang sedang berlangsung. Halaman ini menggunakan scroll vertikal tunggal untuk mendukung tampilan landscape.
 
 - **Header:** Tanggal Hijriah Umm al-Qura (misal *"9 Dzulhijjah 1446 H"*) + Tanggal Masehi + Jam Aktif (Simulasi/Real).
-- **Bar Waktu Sholat:** 6 waktu sholat Makkah dalam scroll horizontal.
+- **Bar Waktu Sholat:** 6 waktu sholat Makkah dalam scroll horizontal, dilengkapi dengan keterangan "*Waktu sholat untuk wilayah Makkah" untuk menghindari kerancuan lokasi.
 - **Progress Dashboard (Horizontal):** 
     - **Hari Ini**: Progres harian.
     - **Total Rukun**: Progres kumulatif seluruh rukun.

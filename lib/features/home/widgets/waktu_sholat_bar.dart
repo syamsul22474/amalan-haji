@@ -13,9 +13,24 @@ class WaktuSholatBar extends ConsumerWidget {
     final prayerTimeAsync = ref.watch(prayerTimeProvider);
 
     return Container(
-      height: 80,
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: prayerTimeAsync.when(
+      height: 90,
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 16.0, bottom: 4.0),
+            child: Text(
+              '*Waktu sholat untuk wilayah Makkah',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 10,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+          Expanded(
+            child: prayerTimeAsync.when(
         data: (prayerTime) {
           final times = [
             {'name': 'Subuh', 'time': prayerTime.fajr},
@@ -61,6 +76,9 @@ class WaktuSholatBar extends ConsumerWidget {
         },
         loading: () => const LoadingShimmer(),
         error: (err, stack) => const Center(child: Text('Gagal memuat jadwal')),
+            ),
+          ),
+        ],
       ),
     );
   }

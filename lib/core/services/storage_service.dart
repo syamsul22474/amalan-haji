@@ -48,4 +48,23 @@ class StorageService {
     final box = await Hive.openBox(_settingsBox);
     return box.get(_nafarFailedKey, defaultValue: false);
   }
+
+  // Prayer Times Cache
+  static const _prayerTimeBox = 'prayer_times_cache';
+
+  Future<void> setCachedPrayerTime(DateTime date, Map<dynamic, dynamic> timings) async {
+    final box = await Hive.openBox(_prayerTimeBox);
+    final key = 'pt_${date.year}_${date.month}_${date.day}';
+    await box.put(key, timings);
+  }
+
+  Future<Map<String, dynamic>?> getCachedPrayerTime(DateTime date) async {
+    final box = await Hive.openBox(_prayerTimeBox);
+    final key = 'pt_${date.year}_${date.month}_${date.day}';
+    final data = box.get(key);
+    if (data != null) {
+      return Map<String, dynamic>.from(data as Map);
+    }
+    return null;
+  }
 }

@@ -6,7 +6,7 @@ Dokumen ini mendokumentasikan protokol konteks, arsitektur layanan, dan standar 
 
 | Service | Tanggung Jawab |
 |---|---|
-| **StorageService** | Manajemen data lokal via Hive (Checklist progres). |
+| **StorageService** | Manajemen data lokal via Hive (Checklist progres, *Caching* Waktu Sholat). |
 | **PrayerTimeService** | Integrasi Aladhan API & Fallback Offline. |
 | **ClockService** | Manajemen state waktu (Real-time & Simulasi) melalui `clockProvider` (`now` + `isSimulationMode`). |
 | **NotificationService** | Penjadwalan pengingat lokal berdasarkan waktu sholat (hanya saat mode simulasi non-aktif). |
@@ -14,7 +14,7 @@ Dokumen ini mendokumentasikan protokol konteks, arsitektur layanan, dan standar 
 ## 2. Alur Data (Data Flow)
 1. **Clock** memancarkan state waktu aktif (`now`) + flag `isSimulationMode`.
 2. **HijriProvider** menghitung tanggal Hijriah Umm al-Qura berdasarkan `now` dan `HijriAdjustment` dari storage.
-3. **PrayerTimeProvider** hanya memicu fetch saat *tanggal berubah* (day-key), lalu fetch via `PrayerTimeService` (API/fallback).
+3. **PrayerTimeProvider** hanya memicu fetch saat *tanggal berubah* (day-key), lalu fetch via `PrayerTimeService` (API -> Cache). Jika gagal/offline, akan meload data dari Cache, lalu *fallback* terakhir ke default (waktu aktual Hajj 2026).
 4. **NotificationService** mendengarkan hasil `PrayerTimeProvider` dan:
    - schedule pengingat sholat saat `isSimulationMode == false`.
    - cancel pengingat saat `isSimulationMode == true`.
@@ -29,6 +29,11 @@ Dokumen ini mendokumentasikan protokol konteks, arsitektur layanan, dan standar 
 - **Box Name**: `amalan_checklist`
 - **Key Pattern**: `hari_{dzulhijjah}_{amalanId}`
 - **Value**: `bool` (true = selesai).
+- **Box Name**: `app_settings`
+- **Menyimpan**: `hijri_adjustment` (int) dan `nafar_awal_failed` (bool).
+- **Box Name**: `prayer_times_cache`
+- **Key Pattern**: `pt_{year}_{month}_{day}`
+- **Value**: `Map<dynamic, dynamic>` (raw JSON). Digunakan sebagai fallback pintar saat offline.
 
 ## 4. Best Practices
 - **Atomic Operations**: Pastikan update status amalan bersifat atomik di state notifier dan storage.
