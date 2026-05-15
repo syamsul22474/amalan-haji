@@ -30,6 +30,12 @@ class AmalanCard extends ConsumerWidget {
     final currentHijri = ref.watch(hijriDateProvider);
     final prayerTimeAsync = ref.watch(prayerTimeProvider);
 
+    final allAmalan = ref.watch(amalanProvider);
+    final dependency = amalan.dependsOnAmalanId != null
+        ? allAmalan.where((a) => a.id == amalan.dependsOnAmalanId).firstOrNull
+        : null;
+    final bool isDependencyDone = dependency?.sudahDilakukan ?? true;
+
     final triggerTime = prayerTimeAsync.maybeWhen(
       data: (pt) => _resolveTriggerTime(pt, amalan.waktuTrigger),
       orElse: () => null,
@@ -40,6 +46,7 @@ class AmalanCard extends ConsumerWidget {
       currentHijri: currentHijri,
       now: now,
       triggerTime: triggerTime,
+      isDependencyDone: isDependencyDone,
     );
 
     final bool isLocked = cardState == _AmalanCardState.belumWaktunya;
@@ -86,10 +93,16 @@ class AmalanCard extends ConsumerWidget {
                     : (value) async {
                         if (isLocked && value == true) {
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          String message = 'Belum waktunya. Amalan ini dimulai ${_triggerLabel(amalan.waktuTrigger)?.toLowerCase() ?? 'pada waktunya'}.';
+
+                          if (!isDependencyDone && dependency != null) {
+                            message = 'Amalan ini terkunci. Anda harus menyelesaikan "${dependency.nama}" terlebih dahulu.';
+                          }
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                'Belum waktunya. Amalan ini dimulai ${_triggerLabel(amalan.waktuTrigger)?.toLowerCase() ?? 'pada waktunya'}.',
+                                message,
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
                               backgroundColor: AppColors.wajibOrange,
@@ -128,6 +141,35 @@ class AmalanCard extends ConsumerWidget {
                             ),
                           );
                           if (confirmed != true) return;
+                        }
+
+                        if (amalan.id == 'tinggal_mina_12' && value == true) {
+                          final maghrib = prayerTimeAsync.maybeWhen(
+                            data: (pt) => pt.maghrib,
+                            orElse: () => null,
+                          );
+                          if (maghrib != null && now.isAfter(maghrib)) {
+                            ref.read(amalanProvider.notifier).setNafarAwalFailed(true);
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Anda meninggalkan Mina setelah Maghrib. Maka Anda wajib mengerjakan amalan di tanggal 13 (Nafar Tsani).',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                backgroundColor: Colors.redAccent,
+                                behavior: SnackBarBehavior.floating,
+                                duration: Duration(seconds: 5),
+                              ),
+                            );
+                          } else {
+                            ref.read(amalanProvider.notifier).setNafarAwalFailed(false);
+                          }
+                        }
+
+                        if (amalan.id == 'nafar_awal_12' && value == false) {
+                          ref.read(amalanProvider.notifier).setNafarAwalFailed(false);
                         }
 
                         ref.read(amalanProvider.notifier).setAmalanStatus(
@@ -223,8 +265,15 @@ _AmalanCardState _resolveCardState({
   required HijriCalendar currentHijri,
   required DateTime now,
   required DateTime? triggerTime,
+  required bool isDependencyDone,
 }) {
   if (amalan.sudahDilakukan) return _AmalanCardState.selesai;
+
+  // 0. Cek Dependency
+  if (!isDependencyDone) return _AmalanCardState.belumWaktunya;
+
+  // Khusus Ritual Pulang (99) tidak dikunci berdasarkan tanggal
+  if (amalan.hariDzulhijjah == 99) return _AmalanCardState.perluDikerjakan;
 
   // 1. Cek Bulan: Jika sebelum Dzulhijjah (12)
   if (currentHijri.hMonth < 12) return _AmalanCardState.belumWaktunya;

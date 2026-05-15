@@ -9,12 +9,23 @@ final amalanProvider = StateNotifierProvider<AmalanNotifier, List<Amalan>>((ref)
 
 class AmalanNotifier extends StateNotifier<List<Amalan>> {
   final StorageService _storageService;
+  bool _isNafarAwalFailed = false;
 
   AmalanNotifier(this._storageService) : super(AmalanData.allAmalan) {
     _loadStatus();
   }
 
+  bool get isNafarAwalFailed => _isNafarAwalFailed;
+
+  Future<void> setNafarAwalFailed(bool failed) async {
+    _isNafarAwalFailed = failed;
+    await _storageService.setNafarAwalFailed(failed);
+    // Trigger state update to notify listeners
+    state = [...state];
+  }
+
   Future<void> _loadStatus() async {
+    _isNafarAwalFailed = await _storageService.getNafarAwalFailed();
     final updatedList = <Amalan>[];
     for (var amalan in state) {
       final status = await _storageService.getAmalanStatus(
@@ -39,7 +50,18 @@ class AmalanNotifier extends StateNotifier<List<Amalan>> {
     required Amalan amalan,
     required bool status,
   }) async {
-    await _storageService.setAmalanStatus(amalan.hariDzulhijjah, amalan.id, status);
+    // Proteksi: Jika amalan memiliki dependensi dan dependensi tersebut belum selesai,
+    // jangan izinkan untuk mencentang amalan ini.
+    if (status && amalan.dependsOnAmalanId != null) {
+      final dependency =
+          state.where((a) => a.id == amalan.dependsOnAmalanId).firstOrNull;
+      if (dependency != null && !dependency.sudahDilakukan) {
+        return;
+      }
+    }
+
+    await _storageService.setAmalanStatus(
+        amalan.hariDzulhijjah, amalan.id, status);
     state = state.map((a) {
       return a.id == amalan.id ? a.copyWith(sudahDilakukan: status) : a;
     }).toList();

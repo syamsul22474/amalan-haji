@@ -129,7 +129,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   ),
                                 ),
                                 Text(
-                                  'Hari ke-${item.hariDzulhijjah - 7} (${item.hariDzulhijjah} Dzulhijjah)',
+                                  item.hariDzulhijjah == 99
+                                      ? 'Ritual Pulang'
+                                      : 'Hari ke-${item.hariDzulhijjah - 7} (${item.hariDzulhijjah} Dzulhijjah)',
                                   style: const TextStyle(
                                     color: AppColors.textSecondary,
                                     fontSize: 12,
@@ -166,8 +168,23 @@ class _HomePageState extends ConsumerState<HomePage> {
     final currentDay = ref.watch(currentDayProvider);
     final allAmalan = ref.watch(amalanProvider);
 
-    final amalanHariIni =
-        allAmalan.where((a) => a.hariDzulhijjah == currentDay).toList();
+    final isNafarAwalTaken = allAmalan.any((a) => a.id == 'nafar_awal_12' && a.sudahDilakukan);
+
+    final amalanHariIni = allAmalan.where((a) {
+      if (a.hariDzulhijjah != currentDay) return false;
+
+      // Logic Nafar Awal di Tanggal 12
+      if (currentDay == 12) {
+        if (a.id == 'tinggal_mina_12') {
+          if (!isNafarAwalTaken) return false;
+        }
+        // Jika Nafar Awal diambil, Mabit Mina malam 13 (id: mabit_mina_12) dihilangkan
+        if (a.id == 'mabit_mina_12' && isNafarAwalTaken) return false;
+      }
+
+      return true;
+    }).toList();
+
     final amalanSelesai = amalanHariIni.where((a) => a.sudahDilakukan).length;
     final progress =
         amalanHariIni.isEmpty ? 0.0 : amalanSelesai / amalanHariIni.length;

@@ -19,9 +19,10 @@ Dokumen ini mendokumentasikan protokol konteks, arsitektur layanan, dan standar 
    - schedule pengingat sholat saat `isSimulationMode == false`.
    - cancel pengingat saat `isSimulationMode == true`.
 5. **AmalanProvider** menyajikan daftar amalan + status checklist dari Hive.
-6. **Validation Logic**: `AmalanCard` dan `DetailPage` memvalidasi `now` vs `triggerTime` (jam) DAN `hijriDate` vs `amalan.hariDzulhijjah` (tanggal) untuk menentukan status kunci.
-7. **Auto-check Logic**: Provider `amalanProvider` secara otomatis mengalkulasi dan mencentang "Tahallul Awal" dan "Tahallul Tsani" berdasarkan status gabungan dari amalan spesifik (Jumrah, Cukur, Thawaf, Sa'i), menonaktifkan interaksi manual dari UI.
+6. **Validation Logic**: `AmalanCard` dan `DetailPage` memvalidasi `now` vs `triggerTime` (jam) DAN `hijriDate` vs `amalan.hariDzulhijjah` (tanggal) DAN `dependsOnAmalanId` (urutan ritual) untuk menentukan status kunci. **Exemption**: Amalan dengan `hariDzulhijjah == 99` (Tab Pulang) mengecualikan validasi tanggal otomatis.
+7. **Auto-check Logic**: Provider `amalanProvider` secara otomatis mengalkulasi dan mencentang "Tahallul Awal" dan "Tahallul Tsani" berdasarkan status gabungan dari amalan spesifik (Jumrah, Cukur, Thawaf, Sa'i).
 8. **Ongoing Logic**: Filter dinamis pada `OngoingAmalanSheet` yang mengecek status `endConditionAmalanId` secara reaktif.
+9. **Nafar Logic**: Logic dinamis untuk transisi antara Nafar Awal dan Nafar Tsani (Tanggal 12 vs 13) berdasarkan status checkbox "Nafar Awal" dan validasi waktu Maghrib pada amalan "Meninggalkan Mina".
 
 ## 3. Protokol Penyimpanan (Hive)
 - **Box Name**: `amalan_checklist`

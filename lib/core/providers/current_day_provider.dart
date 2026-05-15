@@ -35,7 +35,7 @@ class CurrentDayNotifier extends StateNotifier<int> {
   }
 
   void setDay(int day) {
-    if (day >= 8 && day <= 13) {
+    if ((day >= 8 && day <= 13) || day == 99) {
       _isManual = true;
       state = day;
     }

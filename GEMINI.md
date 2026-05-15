@@ -41,6 +41,12 @@ Fitur kritis untuk pengujian.
     - **Warning Snackbar**: Pesan edukatif saat mencoba mencentang amalan yang terkunci.
     - **Uncheck Protection**: Dialog konfirmasi saat membatalkan status amalan yang sudah selesai.
     - **Auto-check Logic**: Amalan "Tahallul Awal" dan "Tahallul Tsani" dicentang otomatis oleh sistem (mengunci interaksi manual dari pengguna) berdasarkan progres penyelesaian amalan Lontar Jumrah Aqabah, Bercukur, Thawaf Ifadhah, dan Sa'i.
+    - **Sequential Dependency**: Proteksi urutan amalan (seperti Lontar Jumrah Ula -> Wustho -> Aqabah) menggunakan `dependsOnAmalanId` untuk mencegah pengerjaan amalan yang melompati urutan.
 - **Ongoing Amalan**: Fitur monitoring amalan berkelanjutan (seperti Talbiyah) yang berakhir berdasarkan dependency amalan lain (seperti Lontar Jumrah Aqabah).
 - **Date Header**: Tampilan real-time jam simulasi untuk memudahkan pengujian.
-- **Pembaruan Data Fiqih**: Penyesuaian urutan, status wajib/sunnah, dan deskripsi waktu untuk amalan tanggal 8-10 Dzulhijjah sesuai arahan terbaru.
+- **Pembaruan Data & Logika Nafar**:
+    - **Nafar Awal Logic**: Validasi waktu "Meninggalkan Mina" di tanggal 12 (harus sebelum Maghrib). Kegagalan Nafar Awal akan memunculkan kembali Tab Tanggal 13 agar jamaah bisa menyelesaikan ritual Nafar Tsani.
+    - **Tab Pulang**: Penambahan tab khusus "Pulang" (ID hari 99) untuk ritual Thawaf Wada' agar tidak terikat tanggal tertentu.
+    - **Jenis Amalan Pilihan**: Menambahkan kategori `pilihan` (badge biru) untuk "Nafar Awal" agar tidak mengganggu statistik Wajib Haji.
+    - **Thawaf Wada Details**: Penjelasan detail mengenai ketentuan Thawaf Wada dan uzur bagi wanita haid.
+    - **Fix Lock 99**: Pengecualian proteksi tanggal untuk amalan dengan hariDzulhijjah 99 agar tidak terkunci secara otomatis.

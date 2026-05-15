@@ -70,6 +70,7 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 | **RUKUN** | `[RUKUN]` | 🔴 Merah `#C62828` | Tidak sah jika ditinggalkan |
 | **WAJIB** | `[WAJIB]` | 🟠 Oranye `#E65100` | Sah tapi wajib bayar dam jika ditinggal |
 | **SUNNAH** | `[SUNNAH]` | 🟢 Hijau `#2E7D32` | Dianjurkan untuk menyempurnakan pahala |
+| **PILIHAN** | `[PILIHAN]` | 🔵 Biru `Colors.blue` | Pilihan manasik (seperti Nafar Awal) |
 
 ---
 
@@ -118,25 +119,45 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 | No | Nama Amalan | Kategori | Keterangan |
 |---|---|---|---|
 | 1 | Lontar Jumrah Ula (Sughra) | **WAJIB** | 7 batu setelah Dzuhur, berdoa setelahnya |
-| 2 | Lontar Jumrah Wustha | **WAJIB** | 7 batu setelah Ula, berdoa setelahnya |
-| 3 | Lontar Jumrah Aqabah (Kubra) | **WAJIB** | 7 batu, tidak berdoa setelahnya |
+| 2 | Lontar Jumrah Wustha | **WAJIB** | 7 batu setelah Ula, berdoa setelahnya (Dilakukan setelah Ula) |
+| 3 | Lontar Jumrah Aqabah (Kubra) | **WAJIB** | 7 batu, tidak berdoa setelahnya (Dilakukan setelah Wustha) |
 | 4 | Mabit di Mina malam 12 Dzulhijjah | **WAJIB** | Menginap di Mina |
 
 #### Hari ke-5: 12 Dzulhijjah (Tasyriq Kedua)
 
 | No | Nama Amalan | Kategori | Keterangan |
 |---|---|---|---|
-| 1 | Lontar 3 Jumrah (Ula, Wustha, Aqabah) | **WAJIB** | Sama seperti hari ke-4, setelah Dzuhur |
-| 2 | Nafar Awal (Opsional) | **WAJIB** | Boleh meninggalkan Mina sebelum Maghrib |
-| 3 | Mabit di Mina malam 13 Dzulhijjah | **WAJIB** | Bagi yang tidak mengambil Nafar Awal |
+| 1 | Lontar Jumrah Ula (Sughra) | **WAJIB** | 7 batu setelah Dzuhur, berdoa setelahnya |
+| 2 | Lontar Jumrah Wustha | **WAJIB** | 7 batu setelah Ula, berdoa setelahnya (Dilakukan setelah Ula) |
+| 3 | Lontar Jumrah Aqabah (Kubra) | **WAJIB** | 7 batu, tidak berdoa setelahnya (Dilakukan setelah Wustha) |
+| 4 | Nafar Awal (Opsional) | **WAJIB** | Boleh meninggalkan Mina sebelum Maghrib |
+| 5 | Mabit di Mina malam 13 Dzulhijjah | **WAJIB** | Bagi yang tidak mengambil Nafar Awal |
+| 6 | Meninggalkan Mina | **WAJIB** | Bagi yang Nafar Awal, dilakukan sebelum Maghrib |
+| 7 | Thawaf Wada' | **WAJIB** | Bagi yang Nafar Awal (Selesai Haji) |
+
+> [!IMPORTANT]
+> **Logika Nafar Awal**:
+> - Jika "Nafar Awal" dicentang, amalan "Meninggalkan Mina" muncul di Tanggal 12.
+> - Tab Tanggal 13 akan disembunyikan jika Nafar Awal berhasil dilakukan sebelum Maghrib.
+> - Jika "Meninggalkan Mina" dilakukan **setelah Maghrib**, sistem akan mendeteksi sebagai kegagalan Nafar Awal dan memunculkan kembali Tab Tanggal 13 untuk ritual Nafar Tsani.
 
 #### Hari ke-6: 13 Dzulhijjah (Tasyriq Ketiga — Nafar Tsani)
 
 | No | Nama Amalan | Kategori | Keterangan |
 |---|---|---|---|
-| 1 | Lontar 3 Jumrah (Ula, Wustha, Aqabah) | **WAJIB** | Bagi yang Nafar Tsani, setelah Dzuhur |
-| 2 | Meninggalkan Mina | **WAJIB** | Setelah selesai lontar |
-| 3 | Thawaf Wada' | **WAJIB** | Amalan terakhir sebelum pulang, tidak wajib bagi wanita haid |
+| 1 | Lontar Jumrah Ula (Sughra) | **WAJIB** | Bagi yang Nafar Tsani, setelah Dzuhur |
+| 2 | Lontar Jumrah Wustha | **WAJIB** | 7 batu setelah Ula, berdoa setelahnya (Dilakukan setelah Ula) |
+| 3 | Lontar Jumrah Aqabah (Kubra) | **WAJIB** | 7 batu, tidak berdoa setelahnya (Dilakukan setelah Wustha) |
+| 4 | Meninggalkan Mina | **WAJIB** | Setelah selesai lontar |
+
+#### Tab Pulang (Ritual Terakhir)
+
+| No | Nama Amalan | Kategori | Keterangan |
+|---|---|---|---|
+| 1 | Thawaf Wada' | **WAJIB** | Amalan terakhir sebelum meninggalkan Makkah |
+
+> [!NOTE]
+> **Tab Pulang**: Tab ini khusus untuk ritual terakhir haji yang waktunya tidak terikat pada tanggal tertentu, melainkan pada saat jamaah akan benar-benar meninggalkan Makkah.
 
 ---
 
@@ -248,6 +269,7 @@ enum JenisAmalan {
   rukun,   // Wajib — tidak sah jika ditinggalkan
   wajib,   // Harus dikerjakan — bayar dam jika ditinggal
   sunnah,  // Dianjurkan — menyempurnakan pahala
+  pilihan, // Pilihan manasik (e.g. Nafar Awal)
 }
 ```
 

@@ -63,26 +63,144 @@ class AmalanData {
     Amalan(id: 'sai', nama: 'Sa\'i Shafa-Marwah', deskripsi: '7 kali, berlari kecil di lembah al-Masil', jenis: JenisAmalan.rukun, hariDzulhijjah: 10, urutan: 8),
     Amalan(id: 'tahallul_awal', nama: 'Tahallul Awal', deskripsi: 'Dihalalkan segala sesuatu kecuali hal yang berkaitan dengan wanita yaitu berjimak, mubasyarah (bercumbu), dan akad nikah.', jenis: JenisAmalan.wajib, hariDzulhijjah: 10, urutan: 9),
     Amalan(id: 'tahallul_tsani', nama: 'Tahallul Tsani', deskripsi: 'Telah halal segala yang sebelumnya diharamkan saat ihram', jenis: JenisAmalan.wajib, hariDzulhijjah: 10, urutan: 10),
-    Amalan(id: 'mabit_mina_10', nama: 'Mabit di Mina malam 11 Dzulhijjah', deskripsi: 'Kembali ke Mina setelah Thawaf Ifadhah', jenis: JenisAmalan.wajib, hariDzulhijjah: 10, urutan: 11),
+    Amalan(
+      id: 'mabit_mina_10',
+      nama: 'Mabit di Mina malam 11 Dzulhijjah',
+      deskripsi: 'Kembali ke Mina setelah Thawaf Ifadhah.\n\nKetentuan:\nMenghabiskan sebagian besar malam di Mina, Jika dari terbenam matahari hingga terbit fajar 12 jam, maka wajib berada di Mina minimal 6 jam atau lebih sedikit',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 10,
+      urutan: 11,
+    ),
   ];
 
   static const List<Amalan> amalan11Dzulhijjah = [
-    Amalan(id: 'ula_11', nama: 'Lontar Jumrah Ula (Sughra)', deskripsi: '7 batu setelah Dzuhur, berdoa setelahnya', jenis: JenisAmalan.wajib, hariDzulhijjah: 11, urutan: 1, waktuTrigger: 'dhuhr'),
-    Amalan(id: 'wustha_11', nama: 'Lontar Jumrah Wustha', deskripsi: '7 batu setelah Ula, berdoa setelahnya', jenis: JenisAmalan.wajib, hariDzulhijjah: 11, urutan: 2),
-    Amalan(id: 'aqabah_11', nama: 'Lontar Jumrah Aqabah (Kubra)', deskripsi: '7 batu, tidak berdoa setelahnya', jenis: JenisAmalan.wajib, hariDzulhijjah: 11, urutan: 3),
-    Amalan(id: 'mabit_mina_11', nama: 'Mabit di Mina malam 12 Dzulhijjah', deskripsi: 'Menginap di Mina', jenis: JenisAmalan.wajib, hariDzulhijjah: 11, urutan: 4),
+    Amalan(
+      id: 'ula_11',
+      nama: 'Lontar Jumrah Ula (Sughra)',
+      deskripsi: '7 batu setelah Dzuhur, berdoa setelahnya.\n\nSunnah Ketika melempar jumrah ula:\n1. Ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\n2. Setelah melempar jumroh ula disunnahkan untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 11,
+      urutan: 1,
+      waktuTrigger: 'dhuhr',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(
+      id: 'wustha_11',
+      nama: 'Lontar Jumrah Wustha',
+      deskripsi: '7 batu setelah Ula, berdoa setelahnya.\n\nSunnah Ketika melempar jumrah wustho:\n1. Ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\n2. Setelah melempar jumroh wustho disunnahkan untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 11,
+      urutan: 2,
+      dependsOnAmalanId: 'ula_11',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(
+      id: 'aqabah_11',
+      nama: 'Lontar Jumrah Aqabah (Kubra)',
+      deskripsi: '7 batu, tidak berdoa setelahnya.\n\nKetentuan :\nDisunnahkan ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\nTidak disunnahkan Setelah melempar jumroh aqabah untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 11,
+      urutan: 3,
+      dependsOnAmalanId: 'wustha_11',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(
+      id: 'mabit_mina_11',
+      nama: 'Mabit di Mina malam 12 Dzulhijjah',
+      deskripsi: 'Menginap di Mina.\n\nKetentuan:\nMenghabiskan sebagian besar malam di Mina, Jika dari terbenam matahari hingga terbit fajar 12 jam, maka wajib berada di Mina minimal 6 jam atau lebih sedikit',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 11,
+      urutan: 4,
+    ),
   ];
 
   static const List<Amalan> amalan12Dzulhijjah = [
-    Amalan(id: 'tiga_jumrah_12', nama: 'Lontar 3 Jumrah (Ula, Wustha, Aqabah)', deskripsi: 'Sama seperti hari ke-4, setelah Dzuhur', jenis: JenisAmalan.wajib, hariDzulhijjah: 12, urutan: 1, waktuTrigger: 'dhuhr'),
-    Amalan(id: 'nafar_awal_12', nama: 'Nafar Awal (Opsional)', deskripsi: 'Boleh meninggalkan Mina sebelum Maghrib', jenis: JenisAmalan.wajib, hariDzulhijjah: 12, urutan: 2),
-    Amalan(id: 'mabit_mina_12', nama: 'Mabit di Mina malam 13 Dzulhijjah', deskripsi: 'Bagi yang tidak mengambil Nafar Awal', jenis: JenisAmalan.wajib, hariDzulhijjah: 12, urutan: 3),
+    Amalan(
+      id: 'ula_12',
+      nama: 'Lontar Jumrah Ula (Sughra)',
+      deskripsi: '7 batu setelah Dzuhur, berdoa setelahnya.\n\nSunnah Ketika melempar jumrah ula:\n1. Ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\n2. Setelah melempar jumroh ula disunnahkan untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 12,
+      urutan: 1,
+      waktuTrigger: 'dhuhr',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(
+      id: 'wustha_12',
+      nama: 'Lontar Jumrah Wustha',
+      deskripsi: '7 batu setelah Ula, berdoa setelahnya.\n\nSunnah Ketika melempar jumrah wustho:\n1. Ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\n2. Setelah melempar jumroh wustho disunnahkan untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 12,
+      urutan: 2,
+      dependsOnAmalanId: 'ula_12',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(
+      id: 'aqabah_12',
+      nama: 'Lontar Jumrah Aqabah (Kubra)',
+      deskripsi: '7 batu, tidak berdoa setelahnya.\n\nKetentuan :\nDisunnahkan ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\nTidak disunnahkan Setelah melempar jumroh aqabah untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 12,
+      urutan: 3,
+      dependsOnAmalanId: 'wustha_12',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(id: 'nafar_awal_12', nama: 'Nafar Awal (Opsional)', deskripsi: 'Boleh meninggalkan Mina sebelum Maghrib', jenis: JenisAmalan.pilihan, hariDzulhijjah: 12, urutan: 4, dependsOnAmalanId: 'aqabah_12'),
+    Amalan(
+      id: 'mabit_mina_12',
+      nama: 'Mabit di Mina malam 13 Dzulhijjah',
+      deskripsi: 'Bagi yang tidak mengambil Nafar Awal.\n\nKetentuan:\nMenghabiskan sebagian besar malam di Mina, Jika dari terbenam matahari hingga terbit fajar 12 jam, maka wajib berada di Mina minimal 6 jam atau lebih sedikit',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 12,
+      urutan: 5,
+      dependsOnAmalanId: 'aqabah_12',
+    ),
+    Amalan(id: 'tinggal_mina_12', nama: 'Meninggalkan Mina', deskripsi: 'Dilakukan sebelum Maghrib bagi yang Nafar Awal', jenis: JenisAmalan.wajib, hariDzulhijjah: 12, urutan: 6, dependsOnAmalanId: 'nafar_awal_12'),
   ];
 
   static const List<Amalan> amalan13Dzulhijjah = [
-    Amalan(id: 'tiga_jumrah_13', nama: 'Lontar 3 Jumrah (Ula, Wustha, Aqabah)', deskripsi: 'Bagi yang Nafar Tsani, setelah Dzuhur', jenis: JenisAmalan.wajib, hariDzulhijjah: 13, urutan: 1, waktuTrigger: 'dhuhr'),
-    Amalan(id: 'tinggal_mina_13', nama: 'Meninggalkan Mina', deskripsi: 'Setelah selesai lontar', jenis: JenisAmalan.wajib, hariDzulhijjah: 13, urutan: 2),
-    Amalan(id: 'thawaf_wada_13', nama: 'Thawaf Wada\'', deskripsi: 'Amalan terakhir sebelum pulang, tidak wajib bagi wanita haid', jenis: JenisAmalan.wajib, hariDzulhijjah: 13, urutan: 3),
+    Amalan(
+      id: 'ula_13',
+      nama: 'Lontar Jumrah Ula (Sughra)',
+      deskripsi: '7 batu setelah Dzuhur, berdoa setelahnya.\n\nSunnah Ketika melempar jumrah ula:\n1. Ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\n2. Setelah melempar jumroh ula disunnahkan untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 13,
+      urutan: 1,
+      waktuTrigger: 'dhuhr',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(
+      id: 'wustha_13',
+      nama: 'Lontar Jumrah Wustha',
+      deskripsi: '7 batu setelah Ula, berdoa setelahnya.\n\nSunnah Ketika melempar jumrah wustho:\n1. Ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\n2. Setelah melempar jumroh wustho disunnahkan untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 13,
+      urutan: 2,
+      dependsOnAmalanId: 'ula_13',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(
+      id: 'aqabah_13',
+      nama: 'Lontar Jumrah Aqabah (Kubra)',
+      deskripsi: '7 batu, tidak berdoa setelahnya.\n\nKetentuan :\nDisunnahkan ketika melempar menjadikan posisi Makkah berada di sebelah kiri dan Mina di sebelah kanan\nTidak disunnahkan Setelah melempar jumroh aqabah untuk berdoa dengan menghadap ke arah kiblat.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 13,
+      urutan: 3,
+      dependsOnAmalanId: 'wustha_13',
+      waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
+    ),
+    Amalan(id: 'tinggal_mina_13', nama: 'Meninggalkan Mina', deskripsi: 'Setelah selesai lontar', jenis: JenisAmalan.wajib, hariDzulhijjah: 13, urutan: 4, dependsOnAmalanId: 'aqabah_13'),
+  ];
+
+  static const List<Amalan> amalanPulang = [
+    Amalan(
+      id: 'thawaf_wada',
+      nama: 'Thawaf Wada\'',
+      deskripsi: 'Amalan terakhir sebelum pulang.\n\nKetentuan :\n- Thawaf wada’ tidaklah boleh dilakukan melainkan setelah manasik sempurna seperti melempar jumrah pada hari tasyrik dan hendak meninggalkan Makkah (tidak berkaitan dengan tanggal tetapi berdasarkan kapan akan meninggalkan Makkah)\n- Tidaklah masalah menunggu setelah thawaf wada’ untuk persiapan safar, menunggu rombongan, berpamitan, menyiapkan kendaraan, yang penting bukan memilih untuk menetap lagi di Makkah setelah itu\n- Wanita haidh termasuk mendapat uzur meninggalkan thawaf wada’ karena wanita haidh tidaklah diperkenankan untuk shalat dan thawaf. Jika wanita haidh tidak thawaf wada’, maka tidaklah kena kewajiban apa pun. Wanita haidh pun tidaklah mesti menunggu hingga suci.',
+      jenis: JenisAmalan.wajib,
+      hariDzulhijjah: 99,
+      urutan: 1,
+    ),
   ];
 
   static const List<Amalan> allAmalan = [
@@ -92,5 +210,6 @@ class AmalanData {
     ...amalan11Dzulhijjah,
     ...amalan12Dzulhijjah,
     ...amalan13Dzulhijjah,
+    ...amalanPulang,
   ];
 }

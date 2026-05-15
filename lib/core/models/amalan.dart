@@ -2,6 +2,7 @@ enum JenisAmalan {
   rukun,
   wajib,
   sunnah,
+  pilihan,
 }
 
 class Amalan {
@@ -13,6 +14,7 @@ class Amalan {
   final int hariDzulhijjah;
   final int? hariDzulhijjahEnd;
   final String? endConditionAmalanId;
+  final String? dependsOnAmalanId;
   final String? waktuTrigger;
   final String? waktuKeterangan;
   final bool sudahDilakukan;
@@ -27,6 +29,7 @@ class Amalan {
     required this.hariDzulhijjah,
     this.hariDzulhijjahEnd,
     this.endConditionAmalanId,
+    this.dependsOnAmalanId,
     this.waktuTrigger,
     this.waktuKeterangan,
     this.sudahDilakukan = false,
@@ -45,6 +48,7 @@ class Amalan {
         hariDzulhijjah: hariDzulhijjah,
         hariDzulhijjahEnd: hariDzulhijjahEnd,
         endConditionAmalanId: endConditionAmalanId,
+        dependsOnAmalanId: dependsOnAmalanId,
         waktuTrigger: waktuTrigger,
         waktuKeterangan: waktuKeterangan,
         sudahDilakukan: sudahDilakukan ?? this.sudahDilakukan,

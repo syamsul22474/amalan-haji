@@ -35,4 +35,17 @@ class StorageService {
     final box = await Hive.openBox(_settingsBox);
     return box.get(_hijriAdjKey, defaultValue: 0);
   }
+
+  // Nafar Awal Status
+  static const _nafarFailedKey = 'nafar_awal_failed';
+
+  Future<void> setNafarAwalFailed(bool failed) async {
+    final box = await Hive.openBox(_settingsBox);
+    await box.put(_nafarFailedKey, failed);
+  }
+
+  Future<bool> getNafarAwalFailed() async {
+    final box = await Hive.openBox(_settingsBox);
+    return box.get(_nafarFailedKey, defaultValue: false);
+  }
 }

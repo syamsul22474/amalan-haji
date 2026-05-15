@@ -45,9 +45,21 @@ class AmalanDetailPage extends ConsumerWidget {
       orElse: () => null,
     );
 
+    final allAmalan = ref.watch(amalanProvider);
+    final dependency = amalan?.dependsOnAmalanId != null
+        ? allAmalan.where((a) => a.id == amalan!.dependsOnAmalanId).firstOrNull
+        : null;
+    final bool isDependencyDone = dependency?.sudahDilakukan ?? true;
+
     final bool isLocked = amalan != null &&
         !amalan.sudahDilakukan &&
-        _checkIsLocked(amalan: amalan, currentHijri: ref.watch(hijriDateProvider), now: now, triggerTime: triggerTime);
+        _checkIsLocked(
+          amalan: amalan,
+          currentHijri: ref.watch(hijriDateProvider),
+          now: now,
+          triggerTime: triggerTime,
+          isDependencyDone: isDependencyDone,
+        );
 
     if (amalan == null) {
       return const Scaffold(
@@ -81,14 +93,16 @@ class AmalanDetailPage extends ConsumerWidget {
                   Row(
                     children: [
                       BadgeWidget(jenis: amalan.jenis),
-                      const SizedBox(width: 10),
-                      Text(
-                        '${amalan.hariDzulhijjah} Dzulhijjah',
-                        style: const TextStyle(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w600,
+                      if (amalan.hariDzulhijjah != 99) ...[
+                        const SizedBox(width: 10),
+                        Text(
+                          '${amalan.hariDzulhijjah} Dzulhijjah',
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
+                      ],
                       const Spacer(),
                       Checkbox(
                         value: amalan.sudahDilakukan,
@@ -111,10 +125,16 @@ class AmalanDetailPage extends ConsumerWidget {
                             : (value) async {
                                 if (isLocked && value == true) {
                                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                  String message = 'Belum waktunya. Amalan ini dimulai ${_triggerLabel(amalan.waktuTrigger)?.toLowerCase() ?? 'pada waktunya'}.';
+
+                                  if (!isDependencyDone && dependency != null) {
+                                    message = 'Amalan ini terkunci. Anda harus menyelesaikan "${dependency.nama}" terlebih dahulu.';
+                                  }
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'Belum waktunya. Amalan ini dimulai ${_triggerLabel(amalan.waktuTrigger)?.toLowerCase() ?? 'pada waktunya'}.',
+                                        message,
                                         style: const TextStyle(fontWeight: FontWeight.bold),
                                       ),
                                       backgroundColor: AppColors.wajibOrange,
@@ -240,7 +260,14 @@ class AmalanDetailPage extends ConsumerWidget {
     required HijriCalendar currentHijri,
     required DateTime now,
     required DateTime? triggerTime,
+    required bool isDependencyDone,
   }) {
+    // 0. Cek Dependency
+    if (!isDependencyDone) return true;
+
+    // Khusus Ritual Pulang (99) tidak dikunci berdasarkan tanggal
+    if (amalan.hariDzulhijjah == 99) return false;
+
     // 1. Cek Bulan
     if (currentHijri.hMonth < 12) return true;
     if (currentHijri.hMonth > 12) return false;
