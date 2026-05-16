@@ -3,6 +3,5 @@ name = "amalan-haji"
 compatibility_date = "2024-01-01"
 
 [assets]
-directory = "build/web" # Diubah dari "./build/web" menjadi "build/web"
-binding = "ASSETS"
+directory = "build/web"
 not_found_handling = "single-page-application"
