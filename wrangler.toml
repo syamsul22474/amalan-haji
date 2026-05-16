@@ -1,0 +1,8 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "amalan-haji"
+compatibility_date = "2024-01-01"
+
+[assets]
+directory = "./build/web"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
