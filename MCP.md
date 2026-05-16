@@ -22,7 +22,7 @@ Dokumen ini mendokumentasikan protokol konteks, arsitektur layanan, dan standar 
 6. **Validation Logic**: `AmalanCard` dan `DetailPage` memvalidasi `now` vs `triggerTime` (jam) DAN `hijriDate` vs `amalan.hariDzulhijjah` (tanggal) DAN `dependsOnAmalanId` (urutan ritual) untuk menentukan status kunci. **Exemption**: Amalan dengan `hariDzulhijjah == 99` (Tab Pulang) mengecualikan validasi tanggal otomatis.
 7. **Auto-check Logic**: Provider `amalanProvider` secara otomatis mengalkulasi dan mencentang "Tahallul Awal" dan "Tahallul Tsani" berdasarkan status gabungan dari amalan spesifik (Jumrah, Cukur, Thawaf, Sa'i). Amalan ini memiliki kategori `status` dan dikecualikan dari agregasi progres.
 8. **Ongoing Logic**: Filter dinamis pada `OngoingAmalanSheet` yang mengecek status `endConditionAmalanId` secara reaktif.
-9. **Nafar Logic**: Logic dinamis untuk transisi antara Nafar Awal dan Nafar Tsani (Tanggal 12 vs 13) berdasarkan status checkbox "Nafar Awal" dan validasi waktu Maghrib pada amalan "Meninggalkan Mina".
+9. **Nafar Logic**: Logic dinamis untuk transisi antara Nafar Awal dan Nafar Tsani (Tanggal 12 vs 13) berdasarkan status checkbox "Nafar Awal" dan validasi waktu Maghrib pada amalan tersebut. Logic ini juga secara reaktif mengurangi jumlah amalan aktif pada perhitungan progres global (Wajib/Rukun) saat Nafar Awal berhasil diambil.
 10. **UI Scroll Logic**: Home Dashboard menggunakan `ListView` utama untuk menyatukan header dan list, memastikan kompatibilitas scroll pada layar kecil dan mode landscape.
 
 ## 3. Protokol Penyimpanan (Hive)

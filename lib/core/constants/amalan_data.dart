@@ -146,16 +146,7 @@ class AmalanData {
       waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
     ),
     Amalan(id: 'nafar_awal_12', nama: 'Nafar Awal (Opsional)', deskripsi: 'Boleh meninggalkan Mina sebelum Maghrib', jenis: JenisAmalan.pilihan, hariDzulhijjah: 12, urutan: 4, dependsOnAmalanId: 'aqabah_12'),
-    Amalan(
-      id: 'mabit_mina_12',
-      nama: 'Mabit di Mina malam 13 Dzulhijjah',
-      deskripsi: 'Bagi yang tidak mengambil Nafar Awal.\n\nKetentuan:\nMenghabiskan sebagian besar malam di Mina, Jika dari terbenam matahari hingga terbit fajar 12 jam, maka wajib berada di Mina minimal 6 jam atau lebih sedikit',
-      jenis: JenisAmalan.wajib,
-      hariDzulhijjah: 12,
-      urutan: 5,
-      dependsOnAmalanId: 'aqabah_12',
-    ),
-    Amalan(id: 'tinggal_mina_12', nama: 'Meninggalkan Mina', deskripsi: 'Dilakukan sebelum Maghrib bagi yang Nafar Awal', jenis: JenisAmalan.wajib, hariDzulhijjah: 12, urutan: 6, dependsOnAmalanId: 'nafar_awal_12'),
+    Amalan(id: 'mabit_mina_12', nama: 'Mabit di Mina malam 13 Dzulhijjah', deskripsi: 'Bagi yang tidak mengambil Nafar Awal.\n\nKetentuan:\nMenghabiskan sebagian besar malam di Mina, Jika dari terbenam matahari hingga terbit fajar 12 jam, maka wajib berada di Mina minimal 6 jam atau lebih sedikit', jenis: JenisAmalan.wajib, hariDzulhijjah: 12, urutan: 5, dependsOnAmalanId: 'aqabah_12'),
   ];
 
   static const List<Amalan> amalan13Dzulhijjah = [
@@ -189,7 +180,6 @@ class AmalanData {
       dependsOnAmalanId: 'wustha_13',
       waktuKeterangan: 'Mulai : Dzuhur\nBerakhir : Sebelum terbit fajar keesokan harinya',
     ),
-    Amalan(id: 'tinggal_mina_13', nama: 'Meninggalkan Mina', deskripsi: 'Setelah selesai lontar', jenis: JenisAmalan.wajib, hariDzulhijjah: 13, urutan: 4, dependsOnAmalanId: 'aqabah_13'),
   ];
 
   static const List<Amalan> amalanPulang = [

@@ -143,7 +143,7 @@ class AmalanCard extends ConsumerWidget {
                           if (confirmed != true) return;
                         }
 
-                        if (amalan.id == 'tinggal_mina_12' && value == true) {
+                        if (amalan.id == 'nafar_awal_12' && value == true) {
                           final maghrib = prayerTimeAsync.maybeWhen(
                             data: (pt) => pt.maghrib,
                             orElse: () => null,
@@ -155,7 +155,7 @@ class AmalanCard extends ConsumerWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                  'Anda meninggalkan Mina setelah Maghrib. Maka Anda wajib mengerjakan amalan di tanggal 13 (Nafar Tsani).',
+                                  'Anda mengambil Nafar Awal tapi baru meninggalkan Mina setelah Maghrib. Maka Anda wajib mengerjakan amalan di tanggal 13 (Nafar Tsani).',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 backgroundColor: Colors.redAccent,

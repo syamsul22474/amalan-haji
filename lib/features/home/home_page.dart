@@ -173,20 +173,18 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     final isNafarAwalTaken = allAmalan.any((a) => a.id == 'nafar_awal_12' && a.sudahDilakukan);
 
-    final amalanHariIni = allAmalan.where((a) {
-      if (a.hariDzulhijjah != currentDay) return false;
+    final isNafarAwalFailed = ref.watch(amalanProvider.notifier).isNafarAwalFailed;
 
-      // Logic Nafar Awal di Tanggal 12
-      if (currentDay == 12) {
-        if (a.id == 'tinggal_mina_12') {
-          if (!isNafarAwalTaken) return false;
-        }
-        // Jika Nafar Awal diambil, Mabit Mina malam 13 (id: mabit_mina_12) dihilangkan
-        if (a.id == 'mabit_mina_12' && isNafarAwalTaken) return false;
+    // Filter amalan yang aktif (exclude yang dihilangkan karena Nafar Awal)
+    final activeAmalan = allAmalan.where((a) {
+      if (isNafarAwalTaken && !isNafarAwalFailed) {
+        if (a.hariDzulhijjah == 13) return false;
+        if (a.id == 'mabit_mina_12') return false;
       }
-
       return true;
     }).toList();
+
+    final amalanHariIni = activeAmalan.where((a) => a.hariDzulhijjah == currentDay).toList();
 
     final amalanHariIniForProgress =
         amalanHariIni.where((a) => a.jenis != JenisAmalan.status).toList();
@@ -196,11 +194,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         ? 0.0
         : amalanSelesai / amalanHariIniForProgress.length;
 
-    final rukunAmalan = allAmalan.where((a) => a.jenis == JenisAmalan.rukun).toList();
+    final rukunAmalan = activeAmalan.where((a) => a.jenis == JenisAmalan.rukun).toList();
     final rukunSelesai = rukunAmalan.where((a) => a.sudahDilakukan).length;
     final rukunProgress = rukunAmalan.isEmpty ? 0.0 : rukunSelesai / rukunAmalan.length;
 
-    final wajibAmalan = allAmalan.where((a) => a.jenis == JenisAmalan.wajib).toList();
+    final wajibAmalan = activeAmalan.where((a) => a.jenis == JenisAmalan.wajib).toList();
     final wajibSelesai = wajibAmalan.where((a) => a.sudahDilakukan).length;
     final wajibProgress = wajibAmalan.isEmpty ? 0.0 : wajibSelesai / wajibAmalan.length;
 

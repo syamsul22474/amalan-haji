@@ -133,14 +133,11 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 | 3 | Lontar Jumrah Aqabah (Kubra) | **WAJIB** | 7 batu, tidak berdoa setelahnya (Dilakukan setelah Wustha) |
 | 4 | Nafar Awal (Opsional) | **WAJIB** | Boleh meninggalkan Mina sebelum Maghrib |
 | 5 | Mabit di Mina malam 13 Dzulhijjah | **WAJIB** | Bagi yang tidak mengambil Nafar Awal |
-| 6 | Meninggalkan Mina | **WAJIB** | Bagi yang Nafar Awal, dilakukan sebelum Maghrib |
-| 7 | Thawaf Wada' | **WAJIB** | Bagi yang Nafar Awal (Selesai Haji) |
 
 > [!IMPORTANT]
 > **Logika Nafar Awal**:
-> - Jika "Nafar Awal" dicentang, amalan "Meninggalkan Mina" muncul di Tanggal 12.
-> - Tab Tanggal 13 akan disembunyikan jika Nafar Awal berhasil dilakukan sebelum Maghrib.
-> - Jika "Meninggalkan Mina" dilakukan **setelah Maghrib**, sistem akan mendeteksi sebagai kegagalan Nafar Awal dan memunculkan kembali Tab Tanggal 13 untuk ritual Nafar Tsani.
+> - Jika "Nafar Awal" dicentang, sistem akan memvalidasi waktu saat ini. Jika dilakukan **setelah Maghrib**, sistem akan mendeteksi sebagai kegagalan Nafar Awal dan memunculkan kembali Tab Tanggal 13 untuk ritual Nafar Tsani.
+> - **Progres Dinamis**: Saat Nafar Awal berhasil diambil, total amalan Wajib akan berkurang secara otomatis karena amalan tanggal 13 dan Mabit di Mina malam 13 tidak lagi dihitung dalam progres.
 
 #### Hari ke-6: 13 Dzulhijjah (Tasyriq Ketiga — Nafar Tsani)
 
@@ -149,7 +146,6 @@ Seluruh data amalan bersifat **statis** berdasarkan ketentuan syariat Islam dan 
 | 1 | Lontar Jumrah Ula (Sughra) | **WAJIB** | Bagi yang Nafar Tsani, setelah Dzuhur |
 | 2 | Lontar Jumrah Wustha | **WAJIB** | 7 batu setelah Ula, berdoa setelahnya (Dilakukan setelah Ula) |
 | 3 | Lontar Jumrah Aqabah (Kubra) | **WAJIB** | 7 batu, tidak berdoa setelahnya (Dilakukan setelah Wustha) |
-| 4 | Meninggalkan Mina | **WAJIB** | Setelah selesai lontar |
 
 #### Tab Pulang (Ritual Terakhir)
 

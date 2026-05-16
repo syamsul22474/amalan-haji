@@ -45,7 +45,7 @@ Fitur kritis untuk pengujian.
 - **Ongoing Amalan**: Fitur monitoring amalan berkelanjutan (seperti Talbiyah) yang berakhir berdasarkan dependency amalan lain (seperti Lontar Jumrah Aqabah).
 - **Date Header**: Tampilan real-time jam simulasi untuk memudahkan pengujian.
 - **Pembaruan Data & Logika Nafar**:
-    - **Nafar Awal Logic**: Validasi waktu "Meninggalkan Mina" di tanggal 12 (harus sebelum Maghrib). Kegagalan Nafar Awal akan memunculkan kembali Tab Tanggal 13 agar jamaah bisa menyelesaikan ritual Nafar Tsani.
+    - **Nafar Awal Logic**: Validasi waktu pada amalan "Nafar Awal" di tanggal 12 (harus sebelum Maghrib). Kegagalan Nafar Awal akan memunculkan kembali Tab Tanggal 13 agar jamaah bisa menyelesaikan ritual Nafar Tsani. Sistem secara otomatis menyesuaikan (mengurangi) total amalan Wajib saat Nafar Awal aktif agar progres tetap akurat.
     - **Tab Pulang**: Penambahan tab khusus "Pulang" (ID hari 99) untuk ritual Thawaf Wada' agar tidak terikat tanggal tertentu.
     - **Jenis Amalan Pilihan & Status**: Menambahkan kategori `pilihan` (badge biru) untuk "Nafar Awal" dan kategori `status` (badge teal) untuk "Tahallul Awal/Tsani". Kategori `status` dikecualikan dari seluruh perhitungan progres (Wajib Haji & Progres Harian).
     - **Fix Lock 99**: Pengecualian proteksi tanggal untuk amalan dengan hariDzulhijjah 99 agar tidak terkunci secara otomatis.
